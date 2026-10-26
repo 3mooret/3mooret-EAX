@@ -103,6 +103,11 @@ Any folder you add under `sounds` becomes a new category the next time the app s
 - لتفعيل العربية: الإعدادات ثم السلوك ثم **العربية (Arabic)**.
 - أصوات التصنيفات (مضحك، ماين كرافت، سينمائي، حيوانات) تُنزَّل بتشغيل `tools\get-sounds.ps1`.
 
+<p align="center">
+  <img src="docs/main-ar.png" alt="الواجهة بالعربي" width="640">
+  <img src="docs/mixer-ar.png" alt="الميكسر بالعربي" width="300">
+</p>
+
 ## Credits
 
 - **Made by:** 3mooret and AMMAR. Instagram [@064_](https://www.instagram.com/064_/)
