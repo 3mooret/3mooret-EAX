@@ -372,4 +372,4 @@ To add a mask, add a row at the end of `MASKS` and put its row number in `OWN_OR
 
 Glass Edition modified by 3mooret &bull; AMMAR &bull; [@064_](https://www.instagram.com/064_/)
 
-Original project &copy; 2026 MasonGroup. Join our Discord: https://discord.gg/8c4JqV64xA
+Original project &copy; 2026 MasonGroup (MIT licence). This edition &copy; 2026 coda Group. Join our Discord: https://discord.gg/8c4JqV64xA
