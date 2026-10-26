@@ -114,6 +114,7 @@
     <Image Include="..\res\octopus.ico" />
     <Image Include="..\res\octopus.png" />
     <Image Include="..\res\dsaffe.png" />
+    <Image Include="..\res\background.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

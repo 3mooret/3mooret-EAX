@@ -2065,10 +2065,52 @@ static HBITMAP renderWall(Gdiplus::Bitmap& src, int bw, int bh, int radius) {
     return dib;
 }
 
+// The animated background built into the program (resource 203).
+static const wchar_t* BUILTIN_BG = L"builtin";
+
+static IStream* resourceStream(int id) {
+    const HMODULE mod = GetModuleHandleW(nullptr);
+    HRSRC hr = FindResourceW(mod, MAKEINTRESOURCEW(id), MAKEINTRESOURCEW(10));
+    if (!hr) return nullptr;
+    HGLOBAL hg = LoadResource(mod, hr);
+    const DWORD n = SizeofResource(mod, hr);
+    const void* p = hg ? LockResource(hg) : nullptr;
+    if (!p || !n) return nullptr;
+    HGLOBAL mem = GlobalAlloc(GMEM_MOVEABLE, n);
+    if (!mem) return nullptr;
+    void* dst = GlobalLock(mem);
+    if (!dst) { GlobalFree(mem); return nullptr; }
+    memcpy(dst, p, n);
+    GlobalUnlock(mem);
+    IStream* st = nullptr;
+    if (FAILED(CreateStreamOnHGlobal(mem, TRUE, &st)) || !st) { GlobalFree(mem); return nullptr; }
+    return st;
+}
+
+struct StreamHold {
+    IStream* s = nullptr;
+    ~StreamHold() { if (s) s->Release(); }
+};
+
+// A picture that cannot be read (moved or deleted) is replaced by the built-in background.
+static void wallFallback() {
+    if (wallPath.empty() || wallPath == BUILTIN_BG) return;
+    if (GetFileAttributesW(wallPath.c_str()) == INVALID_FILE_ATTRIBUTES) wallPath = BUILTIN_BG;
+}
+
 static void buildBackground() {
     dropBackground();
     if (wallPath.empty()) return;
-    Gdiplus::Bitmap src(wallPath.c_str());
+    StreamHold hold;
+    std::unique_ptr<Gdiplus::Bitmap> srcOwner;
+    if (wallPath == BUILTIN_BG) {
+        hold.s = resourceStream(203);
+        if (!hold.s) return;
+        srcOwner.reset(new Gdiplus::Bitmap(hold.s));
+    } else {
+        srcOwner.reset(new Gdiplus::Bitmap(wallPath.c_str()));
+    }
+    Gdiplus::Bitmap& src = *srcOwner;
     if (src.GetLastStatus() != Gdiplus::Ok || src.GetWidth() == 0 || src.GetHeight() == 0) return;
     uprightPhoto(src);
     const int fullW = sc(WIN_W), fullH = sc(WIN_H);
@@ -6947,7 +6989,7 @@ static void paintLook(HDC dc, const RECT& rc) {
         SetTextColor(dc, C_DIM);
         SetBkMode(dc, TRANSPARENT);
         HGDIOBJ of = SelectObject(dc, fntUI);
-        drawText(dc, wallPath.empty() ? L"No picture" : wallPath.c_str(), -1, &pr,
+        drawText(dc, wallPath.empty() ? L"No picture" : (wallPath == BUILTIN_BG ? L"Built-in background" : wallPath.c_str()), -1, &pr,
                   DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_PATH_ELLIPSIS | DT_NOPREFIX);
         SelectObject(dc, of);
     }
@@ -14843,7 +14885,9 @@ static bool glassApply() {
         look.clear = CLEAR_DEFAULT; look.blur = BLUR_DEFAULT; look.darken = DARKEN_DEFAULT;
         return true;
     }
-    return false;
+    wallPath = BUILTIN_BG;
+    look.clear = CLEAR_DEFAULT; look.blur = BLUR_DEFAULT; look.darken = DARKEN_DEFAULT;
+    return true;
 }
 
 // Once per user: switch an existing setup over to the glass look. After that the Look settings are theirs again.
@@ -14903,6 +14947,7 @@ int WINAPI WinMain(_In_ HINSTANCE hi, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int n
     eqLoad();
     settingsLoad();
     if (wallPath.empty()) glassApply();
+    wallFallback();
     {
         const HMONITOR primary = MonitorFromPoint(POINT{0, 0}, MONITOR_DEFAULTTOPRIMARY);
         uiDpi = dpiOfMonitor(primary);
@@ -15037,6 +15082,8 @@ int WINAPI WinMain(_In_ HINSTANCE hi, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int n
         }
         sessionLoad();
         glassOnce();
+        wallFallback();
+        buildBackground();
         std::thread([owner = hwnd] {
             const MediaWork busy;
             auto* found = new std::vector<std::wstring>(scanSetupRoots());

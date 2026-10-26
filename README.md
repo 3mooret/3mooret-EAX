@@ -70,7 +70,7 @@ Windows may warn about an unsigned program. Click **More info**, then **Run anyw
 
 | Feature | What it does |
 | --- | --- |
-| Glass theme | Translucent rounded cards over a blurred picture or animated GIF. The default is `res/background.gif`. Replace it with your own (or add `res/background.jpg`) before building, or pick one in Settings, Look |
+| Glass theme | Translucent rounded cards over a blurred picture or animated GIF. The default animated background is built into the program (from `res/background.gif`). Replace that file with your own before building, or pick any picture or GIF in Settings, Look |
 | Mixer | Strips for the mic, clips, programs, room and output, plus the Sound card panel |
 | Several programs on the mic | In **Program on the mic**, click a program to add it and click again to remove it. Up to 4 at once |
 | System tray | The minimise and close buttons hide the window to the tray. Right-click the icon for Open and Exit. Turn it off with **Minimize to tray** |

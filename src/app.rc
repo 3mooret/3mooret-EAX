@@ -2,6 +2,7 @@
 1 ICON "../res/octopus.ico"
 201 RCDATA "../res/octopus.png"
 202 RCDATA "../res/dsaffe.png"
+203 RCDATA "../res/background.gif"
 
 1 VERSIONINFO
 FILEVERSION     1,0,0,0
