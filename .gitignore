@@ -1,0 +1,13 @@
+.vs/
+build/
+backup/
+deep_backup/
+final_build_msvc/
+*.user
+
+# Personal pictures (not mine to share). Put your own at res/background.gif or res/background.jpg
+res/background.jpg
+res/background.gif
+Amber.gif
+Thomas shelby*.jpg
+*.part

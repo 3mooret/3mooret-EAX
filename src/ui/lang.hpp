@@ -1,0 +1,215 @@
+#pragma once
+#include <string>
+#include <unordered_map>
+
+namespace lang {
+
+inline bool arabic = false;
+
+struct Pair {
+    const wchar_t* en;
+    const wchar_t* ar;
+};
+
+// Arabic in the Saudi dialect. Every text the app draws goes through tr().
+// A string that is not in this table is shown as it is.
+inline const Pair TABLE[] = {
+    // main window
+    {L"Microphone", L"المايك"}, {L"Speakers", L"السماعات"}, {L"Noise isolation", L"عزل الضوضاء"},
+    {L"Mic output", L"خرج المايك"}, {L"Save as", L"احفظ باسم"}, {L"No setup", L"ما فيه إعداد"},
+    {L"Microphone level", L"مستوى المايك"}, {L"Enable audio effects", L"شغّل المؤثرات"},
+    {L"Hear myself", L"اسمع صوتي"}, {L"Raw mic (no auto gain)", L"مايك خام (بدون رفع تلقائي)"},
+    {L"Effects amount", L"قوة المؤثرات"}, {L"Echo on", L"الصدى على"}, {L"My voice", L"صوتي"},
+    {L"Sound clip", L"مقطع صوت"}, {L"Program", L"البرنامج"}, {L"Mask on", L"القناع على"},
+    {L"Voice mask", L"قناع الصوت"}, {L"Pitch", L"النغمة"}, {L"Size", L"الحجم"}, {L"Voice changer", L"مغيّر الصوت"},
+    {L"Speed", L"السرعة"}, {L"Voice speed", L"سرعة الصوت"}, {L"Keep pitch", L"ثبّت النغمة"}, {L"Glitch", L"التقطيع"},
+    {L"Graphic equalizer", L"الإكوالايزر"}, {L"Enable equalizer", L"شغّل الإكوالايزر"}, {L"Presets", L"الجاهزة"},
+    {L"Default", L"الأصلي"}, {L"Level", L"المستوى"}, {L"Bass", L"البيز"},
+    {L"Wide echo in headphones", L"صدى واسع بالسماعة"}, {L"Vocal", L"صوتي"},
+    {L"Position", L"الموضع"}, {L"Volume", L"الصوت"},
+    {L"Hear it myself", L"أسمعه أنا"}, {L"Send to the mic", L"ارسله للمايك"},
+    {L"Program on the mic", L"برنامج على المايك"}, {L"Only I hear it", L"أنا بس اللي أسمعه"},
+    {L"Hear it through the card", L"أسمعه من الكرت"}, {L"Hear it from the app", L"أسمعه من التطبيق"},
+    {L"Open", L"افتح"}, {L"Play", L"شغّل"}, {L"Resume", L"كمّل"}, {L"Pause", L"وقّف مؤقت"}, {L"Stop", L"وقّف"},
+    {L"Paused", L"موقوف مؤقتًا"}, {L"Finished", L"خلص"}, {L"Loading...", L"يحمّل..."},
+    {L"Paste a link or open a sound file", L"الصق رابط أو افتح ملف صوت"},
+    {L"Paste the sound link", L"الصق رابط الصوت"}, {L"Pick an app to play through your mic", L"اختر برنامج يطلع صوته بالمايك"},
+    {L"(none)", L"(ولا شي)"}, {L"Up to 4 programs at once", L"لين 4 برامج مرة وحدة"},
+    {L"Pick this mic in Discord and games:  ", L"اختر هذا المايك في ديسكورد والألعاب:  "},
+    {L"Audio effects on", L"المؤثرات شغّالة"}, {L"Audio effects off", L"المؤثرات مطفّية"},
+    {L"Noise isolation on", L"عزل الضوضاء شغّال"}, {L"Noise isolation off", L"عزل الضوضاء مطفّي"},
+    {L"Hear myself on", L"اسمع صوتي: شغّال"}, {L"Hear myself off", L"اسمع صوتي: مطفّي"},
+    {L"Virtual mic ready", L"المايك الوهمي جاهز"},
+    {L"Close 3mooret EAX. With Minimize to tray on, it hides to the system tray instead.", L"إغلاق البرنامج. لو التصغير للصينية شغّال، يختفي في الصينية بدل ما يقفل."},
+    // recorder and editor
+    {L"Record", L"سجّل"}, {L"Recording", L"يسجّل"}, {L"Save", L"احفظ"}, {L"Cut out", L"قص"}, {L"Keep only", L"خلّه بس"},
+    {L"Trim", L"قصّ"}, {L"Trim pad", L"قصّ الزر"}, {L"Start", L"البداية"}, {L"End", L"النهاية"}, {L"Length", L"المدة"},
+    {L"Fade in", L"دخول"}, {L"Fade out", L"خروج"}, {L"Play part", L"شغّل الجزء"}, {L"Done", L"تم"},
+    {L"Cancel", L"إلغاء"}, {L"Send to mic", L"ارسل للمايك"}, {L"Back", L"رجوع"},
+    {L"Save as: save the recording as MP3, WAV, M4A, WMA or FLAC.", L"احفظ باسم: احفظ التسجيل بصيغة MP3 أو WAV أو M4A أو WMA أو FLAC."},
+    {L"Press Record and speak, or Last to grab what you just said", L"اضغط سجّل وتكلم، أو الأخير عشان تلتقط اللي قلته توّك"},
+    // soundboard
+    {L"Soundboard", L"لوحة الأصوات"}, {L"Pads", L"الأزرار"}, {L"Your sounds", L"أصواتك"}, {L"Empty", L"فاضي"}, {L"No key", L"بدون مفتاح"},
+    {L"Add sounds", L"أضف أصوات"}, {L"Remove sound", L"احذف الصوت"}, {L"Put on pad", L"حطّه على زر"}, {L"Rename", L"غيّر الاسم"},
+    {L"Set key", L"حدد مفتاح"}, {L"Clear pad", L"فضّي الزر"}, {L"Stop all", L"وقّف الكل"}, {L"Stop key", L"مفتاح الإيقاف"},
+    {L"Press key", L"اضغط مفتاح"}, {L"Press the keys now", L"اضغط المفاتيح الحين"},
+    {L"All", L"الكل"}, {L"Funny", L"مضحك"}, {L"Minecraft", L"ماين كرافت"}, {L"Cinematic", L"سينمائي"}, {L"Animals", L"حيوانات"}, {L"Mine", L"أصواتي"},
+    {L"Click a pad to play it. Its key plays it in any program.", L"اضغط على الزر يشتغل. ومفتاحه يشغّله في أي برنامج."},
+    {L"Press Add sounds to pick sound files", L"اضغط أضف أصوات عشان تختار ملفات"},
+    {L"Pick a sound in the list, then press Put on pad", L"اختر صوت من القائمة وبعدين اضغط حطّه على زر"},
+    {L"Pick a pad, then press Put on pad", L"اختر زر وبعدين اضغط حطّه على زر"},
+    {L"Sounds follow the Sound clip volume, Hear it myself and Send to the mic", L"الأصوات تمشي على مستوى المقطع وخيارات أسمعه أنا وارسله للمايك"},
+    {L"That sound is still loading", L"الصوت للحين يحمّل"},
+    // settings
+    {L"Settings", L"الإعدادات"}, {L"Look", L"المظهر"}, {L"Behaviour", L"السلوك"}, {L"Window", L"النافذة"}, {L"Hotkeys", L"الاختصارات"},
+    {L"Theme colour", L"لون الثيم"}, {L"changes the whole app", L"يغيّر البرنامج كله"}, {L"Custom", L"مخصص"},
+    {L"Background picture", L"صورة الخلفية"}, {L"Background brightness", L"إضاءة الخلفية"}, {L"See-through panels", L"لوحات شفافة"},
+    {L"Blur", L"ضبابية"}, {L"Darken", L"تغميق"}, {L"Window opacity", L"شفافية النافذة"}, {L"Font", L"الخط"}, {L"Bold", L"عريض"},
+    {L"Reset look", L"رجّع المظهر"}, {L"Reset", L"رجّع"}, {L"Add font", L"أضف خط"}, {L"Choose", L"اختر"}, {L"Clear", L"امسح"},
+    {L"Accent", L"اللون الأساسي"}, {L"Text", L"النص"}, {L"Faded text", L"نص باهت"}, {L"Panels", L"اللوحات"}, {L"Background", L"الخلفية"},
+    {L"Edges", L"الحدود"}, {L"Highlight", L"التمييز"}, {L"Off", L"طفّي"}, {L"No picture", L"ما فيه صورة"},
+    {L"Animations", L"الحركات"}, {L"Windows fade in and out, and sliders glide", L"النوافذ تظهر وتختفي بنعومة والأشرطة تنزلق"},
+    {L"Always on top", L"دايم فوق"}, {L"Keeps 3mooret EAX above games and other windows", L"يخلّي البرنامج فوق الألعاب والنوافذ الثانية"},
+    {L"Remember where the window was", L"تذكّر مكان النافذة"}, {L"Opens where you last left it", L"يفتح في المكان اللي خليته فيه"},
+    {L"Show hints", L"أظهر التلميحات"}, {L"Explains each control when the mouse rests on it", L"يشرح لك كل زر لما توقف عليه بالماوس"},
+    {L"Start with Windows", L"شغّله مع الويندوز"}, {L"Open 3mooret EAX when Windows starts.", L"يفتح البرنامج أول ما يشتغل الويندوز."},
+    {L"work in every program, even in games", L"تشتغل في كل البرامج حتى داخل الألعاب"},
+    {L"press the keys, Backspace for none, Esc to keep", L"اضغط المفاتيح، Backspace عشان تشيله، Esc عشان تخليه"},
+    {L"Click a key to set it, right-click to clear it", L"اضغط على المفتاح عشان تحدده، وكليك يمين عشان تمسحه"},
+    {L"Press keys", L"اضغط المفاتيح"}, {L"Not set", L"غير محدد"}, {L"Change", L"غيّر"}, {L"Open folder", L"افتح المجلد"},
+    // about
+    {L"Contributes on 3mooret EAX :", L"ساهم في 3mooret EAX :"}, {L"Special thanks to :", L"شكر خاص لـ :"}, {L"Modified by :", L"تعديل :"},
+    {L"OK", L"تمام"},
+    // tray
+    {L"Open 3mooret EAX", L"افتح 3mooret EAX"}, {L"Exit", L"طلوع"}, {L"Minimize to tray", L"صغّر للصينية"},
+    {L"The minimise and close buttons hide 3mooret EAX to the system tray. Click the tray icon to bring it back, or use Exit in its menu.", L"زر التصغير وزر الإغلاق يخفون البرنامج في صينية النظام. اضغط على الأيقونة عشان يرجع، أو اختر طلوع من قائمتها."},
+    {L"Minimise. With Minimize to tray on, it hides to the system tray.", L"تصغير. لو صغّر للصينية شغّال يختفي في صينية النظام."},
+    // hints
+    {L"The room your voice echoes in.", L"الغرفة اللي يتردد فيها صوتك."},
+    {L"How much echo. 0 turns it off; above 50 the echo starts to cover the voice.", L"قد إيش الصدى. صفر يطفّيه، وفوق الخمسين الصدى يبدأ يغطي على صوتك."},
+    {L"Master switch for the echo and the voice changes. Off, your mic goes through untouched.", L"المفتاح الرئيسي للصدى وتغييرات الصوت. لو طفّيته المايك يطلع زي ما هو."},
+    {L"Play your own processed voice in your headphones.", L"تسمع صوتك بعد المعالجة في السماعة."},
+    {L"Turn off the automatic mic gain. Try it if your voice pumps up and down.", L"يطفّي الرفع التلقائي للمايك. جرّبه لو صوتك يعلى وينزل."},
+    {L"Your mic volume. 100 is normal; above it the voice is pushed harder.", L"صوت المايك. المية عادي، وفوقها يرفع الصوت أكثر."},
+    {L"Cut room noise, keyboard clicks and other voices out of your mic.", L"يشيل ضوضاء الغرفة ونقرات الكيبورد والأصوات الثانية من المايك."},
+    {L"Look again for microphones and speakers you just plugged in.", L"دوّر من جديد على المايكات والسماعات اللي توك موصلها."},
+    {L"The microphone the program listens to.", L"المايك اللي يسمع منه البرنامج."},
+    {L"Where you hear yourself and the program sound.", L"المكان اللي تسمع فيه نفسك وصوت البرنامج."},
+    {L"Raise or lower your voice.", L"يخلّي صوتك أغلظ أو أرفع."},
+    {L"Make the voice sound bigger or smaller.", L"يخلّي الصوت أكبر أو أصغر."},
+    {L"Voice changer: from smaller to bigger in one move.", L"مغيّر الصوت: من الأصغر للأكبر بحركة وحدة."},
+    {L"Speak faster or slower. At other speeds others hear you a little late.", L"تكلم أسرع أو أبطأ. مع السرعات الثانية اللي يسمعونك يوصلهم الصوت متأخر شوي."},
+    {L"Keep the pitch when the speed changes.", L"يثبّت النغمة لما تتغير السرعة."},
+    {L"Play the sound faster or slower.", L"شغّل الصوت أسرع أو أبطأ."},
+    {L"Put the mask on your voice.", L"حط القناع على صوتك."}, {L"Put the mask on sound clips.", L"حط القناع على المقاطع."},
+    {L"Put the mask on the program's sound.", L"حط القناع على صوت البرنامج."}, {L"Turn the mask off.", L"طفّي القناع."},
+    {L"Put the echo on your voice.", L"حط الصدى على صوتك."}, {L"Put the echo on sound clips and soundboard pads.", L"حط الصدى على المقاطع وأزرار اللوحة."},
+    {L"Put the echo on the program's sound.", L"حط الصدى على صوت البرنامج."},
+    {L"Voice masks that come with the program.", L"أقنعة الصوت اللي جاية مع البرنامج."},
+    {L"Masks you made with the controls below.", L"أقنعة سويتها بنفسك من الأدوات تحت."},
+    {L"Hold to glitch your voice. The style is chosen in the box next to it.", L"امسك عشان يتقطع صوتك. النمط تختاره من القائمة اللي جنبه."},
+    {L"What the glitch button does.", L"وش يسوي زر التقطيع."}, {L"Pick a key that holds the glitch from any program.", L"اختر مفتاح يمسك التقطيع من أي برنامج."},
+    {L"Drag a band up or down. Double-click puts it back to 0.", L"اسحب النطاق فوق أو تحت. دبل كليك يرجّعه صفر."},
+    {L"Overall equalizer level.", L"المستوى العام للإكوالايزر."},
+    {L"Equalizer presets. Yours are listed after the built-in ones.", L"إعدادات الإكوالايزر الجاهزة. إعداداتك تطلع بعد الأساسية."},
+    {L"Save these bands as a preset of yours.", L"احفظ هالنطاقات كإعداد خاص فيك."},
+    {L"Delete the chosen preset of yours.", L"احذف الإعداد اللي اخترته."},
+    {L"Send the sound to the mic so others hear it.", L"ارسل الصوت للمايك عشان يسمعه الباقين."},
+    {L"Hear the sound in your headphones too.", L"اسمع الصوت في السماعة بعد."},
+    {L"Sound clip volume. 100 is normal.", L"صوت المقطع. المية عادي."},
+    {L"Program sound level. 100 is normal.", L"صوت البرنامج. المية عادي."},
+    {L"The programs whose sound goes to your mic. Click a program to add it, click again to remove it. Up to 4 at once.",
+     L"البرامج اللي يطلع صوتها بالمايك. اضغط على برنامج يضاف، واضغط عليه مرة ثانية يشيله. لين 4 مرة وحدة."},
+    {L"The program's sound stays in your headphones and never reaches the mic.", L"صوت البرنامج يبقى في سماعتك وما يوصل للمايك."},
+    {L"You hear the program plainly, from the app itself.", L"تسمع البرنامج عادي من التطبيق نفسه."},
+    {L"Open a sound file.", L"افتح ملف صوت."}, {L"Back 10 seconds.", L"ارجع 10 ثواني."}, {L"Forward 10 seconds.", L"قدّم 10 ثواني."},
+    {L"Stop the sound.", L"وقّف الصوت."}, {L"Play, or pause.", L"شغّل أو وقّف مؤقت."},
+    {L"Where the sound is. Drag to jump.", L"وين وصل الصوت. اسحب عشان تنتقل."},
+    {L"Previous saved setup.", L"الإعداد المحفوظ اللي قبله."}, {L"Next saved setup.", L"الإعداد المحفوظ اللي بعده."},
+    {L"Save all the settings as a setup with a name.", L"احفظ كل الإعدادات كإعداد باسم."},
+    {L"Delete the setup in use.", L"احذف الإعداد اللي تستخدمه."},
+    {L"Settings: colours, background picture, fonts, animations, window options and hotkeys.", L"الإعدادات: الألوان وصورة الخلفية والخطوط والحركات وخيارات النافذة والاختصارات."},
+    {L"Soundboard: twelve pads with sounds, and keys that play them from any program.", L"لوحة الأصوات: اثنا عشر زر بأصوات ومفاتيح تشغّلها من أي برنامج."},
+    {L"Shape the tone of everything that goes to the mic.", L"تحكّم في نغمة كل شي يطلع بالمايك."},
+    {L"Drag to make the window bigger or smaller. Double-click to bring back the normal size.", L"اسحب عشان تكبّر النافذة أو تصغّرها. دبل كليك يرجّعها للحجم العادي."},
+    {L"Record from the source picked on the left. Press again to stop.", L"سجّل من المصدر اللي على اليسار. اضغط مرة ثانية عشان توقف."},
+    {L"Undone. The forward arrow brings it back", L"تم التراجع. سهم التقديم يرجّعه"},
+    // status notes
+    {L"Install the virtual mic", L"ثبّت المايك الوهمي"}, {L"Install", L"ثبّت"}, {L"Try again", L"جرّب مرة ثانية"},
+    {L"Restart now", L"أعد التشغيل الحين"}, {L"Later", L"بعدين"}, {L"Downloading VB-CABLE...", L"ينزّل VB-CABLE..."},
+    {L"Unpacking...", L"يفك الضغط..."}, {L"Working...", L"يشتغل..."}, {L"Almost done", L"قربنا نخلص"},
+    {L"The virtual mic is ready", L"المايك الوهمي جاهز"}, {L"The virtual mic needs a hand", L"المايك الوهمي يبيله مساعدة"},
+    {L"No virtual mic yet. Click here to install VB-CABLE.", L"ما فيه مايك وهمي. اضغط هنا عشان تثبّت VB-CABLE."},
+    {L"Needs Windows 10 (2004) or newer", L"يحتاج ويندوز 10 (2004) أو أحدث"},
+    {L"Can't open this microphone. Pick another one.", L"ما قدرت أفتح هالمايك. اختر مايك ثاني."},
+    {L"Download failed. Check your connection and try again.", L"فشل التنزيل. تأكد من النت وجرّب مرة ثانية."},
+    {L"The microphone and speaker lists are up to date", L"قوائم المايكات والسماعات محدّثة"},
+    {L"No new microphones or speakers", L"ما فيه مايكات أو سماعات جديدة"},
+    {L"There are no saved setups yet", L"ما فيه إعدادات محفوظة للحين"}, {L"Setup name", L"اسم الإعداد"},
+    {L"Previous setup", L"الإعداد اللي قبله"}, {L"Next setup", L"الإعداد اللي بعده"},
+    {L"Switch to the previous saved setup", L"انتقل للإعداد المحفوظ اللي قبله"}, {L"Switch to the next saved setup", L"انتقل للإعداد المحفوظ اللي بعده"},
+    {L"Start or stop recording", L"ابدأ التسجيل أو وقّفه"},
+    {L"Audio effects on or off", L"شغّل المؤثرات أو طفّها"}, {L"Noise isolation on or off", L"شغّل عزل الضوضاء أو طفّه"},
+    {L"Hear myself on or off", L"شغّل اسمع صوتي أو طفّه"}, {L"Echo on your voice, on or off", L"الصدى على صوتك، شغّله أو طفّه"},
+    {L"Voice mask on your voice, on or off", L"قناع الصوت على صوتك، شغّله أو طفّه"},
+    {L"Windows key combos belong to Windows", L"اختصارات زر الويندوز للويندوز"},
+    {L"Hold Ctrl, Alt or Shift with a letter or number key", L"امسك Ctrl أو Alt أو Shift مع حرف أو رقم"},
+    {L"Key removed", L"انشال المفتاح"}, {L"Glitch key removed", L"انشال مفتاح التقطيع"},
+    {L"Pad", L"الزر"}, {L"Saved", L"انحفظ"}, {L"Redone", L"انعاد"},
+    {L"Environment", L"البيئة"},
+    {L"Purple", L"بنفسجي"}, {L"Blue", L"أزرق"}, {L"Sky", L"سماوي"}, {L"Teal", L"فيروزي"}, {L"Green", L"أخضر"}, {L"Gold", L"ذهبي"},
+    {L"Orange", L"برتقالي"}, {L"Red", L"أحمر"}, {L"Pink", L"وردي"}, {L"Graphite", L"رصاصي"}, {L"Mint", L"نعناع"},
+    {L"Lime", L"ليموني"}, {L"Violet", L"أرجواني"}, {L"Rose", L"وردة"},
+    // mixer
+    {L"Mixer", L"الميكسر"}, {L"MIC", L"المايك"}, {L"CLIP", L"المقطع"}, {L"PROGRAM", L"البرنامج"}, {L"ROOM", L"الغرفة"}, {L"OUT", L"الخرج"},
+    {L"On the mic", L"على المايك"}, {L"Effects", L"المؤثرات"}, {L"Virtual mic", L"المايك الوهمي"},
+    {L"Sound card", L"كرت الصوت"}, {L"Input", L"الدخل"}, {L"Output", L"الخرج"}, {L"Buffer", L"البفر"},
+    {L"Low", L"منخفض"}, {L"Normal", L"عادي"}, {L"Safe", L"آمن"},    {L"SOLO", L"منفرد"}, {L"MONO", L"مونو"}, {L"PAN", L"توزيع"}, {L"BASS", L"بيز"}, {L"TREB", L"حدّة"},
+    {L"CENTER", L"وسط"}, {L"MUTE", L"كتم"}, {L"BYPASS", L"تجاوز"}, {L"EQ", L"EQ"}, {L"HEAR", L"اسمع"}, {L"RAW", L"خام"}, {L"ONLY", L"أنا بس"},
+    {L"CARD", L"الكرت"}, {L"WIDE", L"واسع"}, {L"CMSS", L"CMSS"},
+    {L"Mixer: a strip for the mic, sound clips, programs, the room and the output, with faders, level meters and mute buttons.",
+     L"الميكسر: شريحة لكل من المايك والمقاطع والبرامج والغرفة والخرج، فيها فيدر وعداد مستوى وزر كتم."},
+    // rooms
+    {L"Auditorium", L"قاعة محاضرات"}, {L"Ball Park", L"ملعب بيسبول"}, {L"Bathroom", L"حمام"}, {L"Cathedral", L"كاتدرائية"},
+    {L"Chapel", L"كنيسة صغيرة"}, {L"Church", L"كنيسة"}, {L"Concert Hall", L"قاعة حفلات"}, {L"Garage", L"قراج"},
+    {L"Haunted Cavern", L"كهف مسكون"}, {L"Indoor Arena", L"صالة مغطاة"}, {L"Jazz Club", L"نادي جاز"}, {L"Living Room", L"مجلس"},
+    {L"Opera House", L"دار أوبرا"}, {L"Small Room", L"غرفة صغيرة"}, {L"Theater", L"سينما"},
+    {L"Cave", L"كهف"}, {L"Underwater", L"تحت الماي"}, {L"Forest", L"غابة"}, {L"Mountains", L"جبال"}, {L"Hangar", L"هنقر"},
+    {L"Sewer Pipe", L"ماسورة مجاري"}, {L"Stone Corridor", L"ممر حجري"}, {L"Alley", L"زقاق"}, {L"Hallway", L"ممر"},
+    {L"Parking Lot", L"موقف سيارات"}, {L"Arena", L"ساحة"}, {L"Padded Cell", L"غرفة مبطّنة"}, {L"Quarry", L"محجر"},
+    {L"Dizzy", L"دوّخني"}, {L"Bell Tower", L"برج الجرس"}, {L"Metal Tank", L"خزان معدني"}, {L"Robot Room", L"غرفة الروبوت"},
+    // voice masks
+    {L"X-Fi", L"X-Fi"}, {L"3mooret EAX masks", L"أقنعة 3mooret EAX"},
+    {L"Alien Brute", L"وحش فضائي"}, {L"Alien Infiltrator", L"متسلل فضائي"}, {L"Deep Voice", L"صوت غليظ"}, {L"Demon", L"شيطان"},
+    {L"Dwarf", L"قزم"}, {L"Elderly", L"كبير سن"}, {L"Elf", L"جنّي"}, {L"Emo", L"إيمو"}, {L"Female to Male", L"من بنت لولد"},
+    {L"From Up North", L"من الشمال"}, {L"Male to Female", L"من ولد لبنت"}, {L"Marine", L"جندي بحرية"}, {L"Munchkin", L"قزم صغير"},
+    {L"Neutral", L"عادي"}, {L"Orc", L"أورك"}, {L"Robot", L"روبوت"}, {L"Scrappy Kid", L"ولد شقي"}, {L"Unstable", L"مهزوز"},
+    {L"Anonymous", L"مجهول"}, {L"Alien", L"فضائي"}, {L"Astronaut", L"رائد فضاء"}, {L"Drunk", L"سكران"}, {L"Duck", L"بطّة"},
+    {L"Ghost", L"شبح"}, {L"Monster", L"وحش"}, {L"Three of Me", L"ثلاثة مني"}, {L"Mickey Mouse", L"ميكي ماوس"},
+    {L"Chipmunk", L"سنجاب"}, {L"Helium", L"هيليوم"}, {L"Baby", L"بيبي"}, {L"Goblin", L"عفريت"}, {L"Giant", L"عملاق"},
+    {L"Zombie", L"زومبي"}, {L"Dark Lord", L"اللورد الأسود"}, {L"Cyborg", L"سايبورغ"}, {L"Megaphone", L"مكبّر صوت"},
+    {L"Phone Call", L"مكالمة"}, {L"Bumblebee", L"نحلة"}, {L"Whisper", L"همس"}, {L"Stranger", L"غريب"},
+    // glitch styles and equalizer presets
+    {L"Repeat", L"تكرار"}, {L"Beep", L"صفّارة"}, {L"Stutter", L"تهتهة"}, {L"Reverse", L"عكس"}, {L"Tape stop", L"توقف شريط"},
+    {L"Scratch", L"خدش"}, {L"Crush", L"تكسير"}, {L"Deep", L"غليظ"}, {L"Echo", L"صدى"}, {L"Cut", L"قطع"},
+    {L"Hold to repeat", L"امسك عشان يتكرر"}, {L"Hold to beep", L"امسك عشان يصفّر"}, {L"Hold to stutter", L"امسك عشان يتهته"},
+    {L"Hold to reverse", L"امسك عشان ينعكس"}, {L"End with tape stop", L"انهِ بتوقف الشريط"}, {L"Hold to scratch", L"امسك عشان يخدش"},
+    {L"End with robot", L"انهِ بروبوت"}, {L"End with crush", L"انهِ بتكسير"}, {L"End with chipmunk", L"انهِ بسنجاب"},
+    {L"End with deep", L"انهِ بصوت غليظ"}, {L"End with echo", L"انهِ بصدى"}, {L"Hold to cut", L"امسك عشان يقطع"},
+    {L"Hold to glitch", L"امسك عشان يتقطع"},
+    {L"Flat", L"مسطّح"}, {L"Treble", L"حدّة"}, {L"Rock", L"روك"}, {L"Pop", L"بوب"}, {L"Jazz", L"جاز"},
+    {L"Classical", L"كلاسيك"}, {L"Dance", L"رقص"}, {L"Acoustic", L"أكوستيك"},
+};
+
+inline const wchar_t* tr(const wchar_t* s) {
+    if (!arabic || !s || !*s) return s;
+    static const std::unordered_map<std::wstring, const wchar_t*> map = [] {
+        std::unordered_map<std::wstring, const wchar_t*> m;
+        for (const Pair& p : TABLE) m.emplace(p.en, p.ar);
+        return m;
+    }();
+    const auto it = map.find(s);
+    return it == map.end() ? s : it->second;
+}
+
+}  // namespace lang
