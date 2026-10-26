@@ -2,7 +2,8 @@
 
 <p align="center">
   <b>Voice effects, a real mixer and a soundboard for Discord and games on Windows.</b><br>
-  Free and open source. Glass design, animated background, Arabic and English.
+  <b>مؤثرات صوت وميكسر ولوحة أصوات لديسكورد والألعاب على ويندوز.</b><br>
+  Free and open source &bull; مجاني ومفتوح المصدر
 </p>
 
 <p align="center">
@@ -16,19 +17,24 @@
 </p>
 
 <p align="center">
-  Made by <b>3mooret</b> &bull; <b>AMMAR</b> &bull; Instagram <a href="https://www.instagram.com/064_/"><b>@064_</b></a>
+  Made by <b>3mooret</b> &bull; <b>AMMAR</b> &bull; Instagram <a href="https://www.instagram.com/064_/"><b>@064_</b></a> &bull; <a href="https://discord.gg/8c4JqV64xA">Discord</a>
 </p>
 
 ---
 
-## Why 3mooret EAX
+**Contents / المحتويات:**
+[Install](#install) &bull; [التثبيت](#التثبيت) &bull; [Features](#features-in-english) &bull; [الخصائص](#الخصائص-بالعربي) &bull; [Build from source](#building-from-source) &bull; [For developers](#for-developers) &bull; [Credits](#credits)
+
+## What it does
+
+3mooret EAX sits between your microphone and Discord (or a game). Your voice goes in, the program changes it, and the result leaves through a virtual microphone called **CABLE Output (VB-Audio Virtual Cable)**. You pick that virtual microphone in Discord or the game. Sound clips, the soundboard and the sound of other programs can go into the same virtual microphone.
 
 | | |
 | --- | --- |
 | **Rooms** | 32 echo rooms, from Bathroom and Cathedral to Cave, Hangar and Haunted Cavern |
 | **Voice** | 42 voice masks, pitch, size, speed and a glitch pad |
 | **Clean mic** | Noise isolation with 5 modes, a 7-band equalizer and a bass control from -12 to +30 dB |
-| **Mixer** | A Voicemeeter-style mixer: faders in dB, animated level meters, solo, mono, pan, bass, treble |
+| **Mixer** | A Voicemeeter-style mixer: faders in dB, animated meters, solo, mono, pan, bass, treble |
 | **Sound card** | Pick the input and output, set their Windows volume, choose the buffer size |
 | **Programs** | Play the sound of up to **4 programs at once** into your mic |
 | **Soundboard** | 12 pads with global hotkeys and a sound library in categories |
@@ -36,205 +42,408 @@
 | **Look** | Glass theme, rounded cards, animated GIF background, 14 colour themes |
 | **Handy** | System tray, remembers your last settings, Arabic (Saudi dialect) |
 
-> **Full guide in English and Arabic / الدليل الكامل بالإنجليزي والعربي:** [docs/FEATURES.md](docs/FEATURES.md) explains every control and feature.
+## وش يسوي البرنامج
+
+برنامج 3mooret EAX يقف بين المايك وديسكورد (أو اللعبة). صوتك يدخل البرنامج، يغيّره، ثم يطلع من مايك وهمي اسمه **CABLE Output (VB-Audio Virtual Cable)**. أنت تختار هذا المايك في ديسكورد أو اللعبة. ويقدر يدخل نفس المايك الوهمي مقاطع صوتية ولوحة الأصوات وصوت البرامج الثانية.
+
+---
 
 ## Install
 
-1. Download `3mooretEAX-v1.0.0-win64.zip` from the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and unzip it.
-2. Run `3mooretEAX.exe`. It offers to set up the free [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) the first time.
-3. In Discord or your game, set your input device to **CABLE Output (VB-Audio Virtual Cable)**.
-4. Pick a room, raise **Effects amount**, and tick **Hear myself** to hear the result.
-
-Windows may warn about an unsigned program. Click **More info**, then **Run anyway**.
-
-## A look around
-
-<table>
-  <tr>
-    <td><img src="docs/mixer.png" alt="Mixer"></td>
-    <td><img src="docs/soundboard.png" alt="Soundboard"></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Mixer</b></td>
-    <td align="center"><b>Soundboard</b></td>
-  </tr>
-  <tr>
-    <td><img src="docs/settings-look.png" alt="Settings, Look"></td>
-    <td><img src="docs/tone.png" alt="Tone"></td>
-  </tr>
-  <tr>
-    <td align="center"><b>Look settings</b></td>
-    <td align="center"><b>Tone</b></td>
-  </tr>
-</table>
-
-## What is new in this edition
-
-| Feature | What it does |
-| --- | --- |
-| Glass theme | Translucent rounded cards over a blurred picture or animated GIF. The default animated background is built into the program (from `res/background.gif`). Replace that file with your own before building, or pick any picture or GIF in Settings, Look |
-| Mixer | Strips for the mic, clips, programs, room and output, plus the Sound card panel |
-| Several programs on the mic | In **Program on the mic**, click a program to add it and click again to remove it. Up to 4 at once |
-| System tray | The minimise and close buttons hide the window to the tray. Right-click the icon for Open and Exit. Turn it off with **Minimize to tray** |
-| Bass control | A slider from -12 to +30 dB under the equalizer, added on top of the automatic bass boost |
-| Sound library | Funny, Minecraft, Cinematic and Animals, plus your own sounds under **Mine**. Pick a category above the sound list and put any sound on a pad |
-| More rooms | 17 new rooms such as Cave, Underwater, Forest, Hangar, Stone Corridor and Robot Room |
-| Arabic | Settings, Behaviour, **العربية (Arabic)**. Texts, rooms and masks are translated in the Saudi dialect |
-| Last settings | The room, devices, levels and everything else come back as you left them (`%APPDATA%\OctopusEAX\last-session.ini`) |
-
-### Getting the sound library
-
-The sounds are not stored in this repository. Run the script once and it downloads them into `%APPDATA%\OctopusEAX\sounds\<Category>`:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File tools\get-sounds.ps1
-```
-
-- **Funny, Cinematic, Animals** come from [Mixkit](https://mixkit.co/license/#sfxFree) under its free sound effects licence.
-- **Minecraft** sounds are downloaded from Mojang's official asset servers. They belong to Mojang Studios, so keep them for your own use and do not redistribute them.
-- [FFmpeg](https://ffmpeg.org) on your PATH converts the Minecraft sounds to MP3. Without it they stay as OGG.
-
-Any folder you add under `sounds` becomes a new category the next time the app starts.
-
-## بالعربي
-
-**3mooret EAX** برنامج مجاني مفتوح المصدر يضيف مؤثرات على صوتك في ديسكورد والألعاب على ويندوز: غرف صدى، أقنعة صوت، عزل ضوضاء، إكوالايزر، ميكسر شبيه بـ Voicemeeter، ولوحة أصوات بمفاتيح تشتغل داخل الألعاب.
-
-- حمّل آخر إصدار من صفحة [Releases](https://github.com/3mooret/3mooret-EAX/releases/latest) وفك الضغط وشغّل `3mooretEAX.exe`.
-- اختر المايك والسماعات، واختر في ديسكورد المايك الوهمي **CABLE Output**.
-- لتفعيل العربية: الإعدادات ثم السلوك ثم **العربية (Arabic)**.
-- أصوات التصنيفات (مضحك، ماين كرافت، سينمائي، حيوانات) تُنزَّل بتشغيل `tools\get-sounds.ps1`.
-
-<p align="center">
-  <img src="docs/main-ar.png" alt="الواجهة بالعربي" width="640">
-  <img src="docs/mixer-ar.png" alt="الميكسر بالعربي" width="300">
-</p>
-
-## Credits
-
-- **Made by:** 3mooret and AMMAR. Instagram [@064_](https://www.instagram.com/064_/)
-- **Based on OctopusEAX** by MasonGroup (MIT licence). Contributors and thanks are in the About window of the app. The original release is [here](https://github.com/ALMASONYH/OctopusEAX/releases/download/Release/build.rar).
-- Sound effects: Mixkit and Mojang Studios, as described above.
-
-## What you need
+### What you need
 
 - Windows 10 or 11, 64-bit
-- A microphone
-- VB-Audio Virtual Cable (free). 3mooret EAX offers to set it up the first time you open it.
+- A microphone (and speakers or headphones)
+- The free [VB-Audio Virtual Cable](https://vb-audio.com/Cable/). The program downloads and installs it for you the first time (internet and administrator permission needed once)
 
-## Getting started
+### Steps
 
-1. Open 3mooret EAX. It opens straight into the main window.
-2. Pick your microphone and your speakers or headphones at the top left.
-3. In Discord or your game, set your input device to the mic shown at the bottom of the window, **What U Hear (VB-Audio Virtual Cable)**.
-4. Pick a room and raise **Effects amount**. Tick **Hear myself** to hear the result.
+1. **Download.** Open the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and download `3mooretEAX-v1.0.0-win64.zip`. Unzip it anywhere (for example `C:\3mooretEAX`). You can also download only `3mooretEAX.exe`: it is the whole program, and the animated background is built into it.
+2. **Run** `3mooretEAX.exe`. If Windows SmartScreen says "Windows protected your PC", click **More info**, then **Run anyway** (the program is not code-signed).
+3. **Install the virtual microphone** (first run only). The window asks for the virtual mic. Press **Install**. The program downloads VB-CABLE and unpacks it. Windows then asks for permission: click **Yes**, then **Install Driver**. When it asks to restart, restart your PC and open 3mooret EAX again. If you already have VB-CABLE, this step is skipped.
+4. **Pick your devices.** At the top left choose your **Microphone** and your **Speakers or headphones**.
+5. **Set Discord or the game.** In Discord: *User Settings, Voice & Video, Input Device* and choose **CABLE Output (VB-Audio Virtual Cable)**. In a game, choose the same device as the microphone. The bottom bar of the program shows this name too.
+6. **Try it.** Pick a room, raise **Effects amount**, tick **Hear myself** to hear the result, and speak.
+7. **Keep the program running** while you talk. Closing the window hides it to the system tray (the icon near the clock). Right-click the icon and choose **Exit** to quit.
 
-Rest the mouse on any control and a short hint tells you what it does.
+### Optional
 
-## The main window
+- **Sound library** (Funny, Minecraft, Cinematic, Animals): run `tools\get-sounds.ps1` once. Right-click it and choose *Run with PowerShell*, or run in PowerShell: `powershell -ExecutionPolicy Bypass -File tools\get-sounds.ps1`. It downloads about 190 sounds into `%APPDATA%\OctopusEAX\sounds\<Category>`. Funny, Cinematic and Animals come from [Mixkit](https://mixkit.co/license/#sfxFree) (free licence). Minecraft sounds come from Mojang's servers and belong to Mojang Studios: keep them for yourself and do not redistribute them. [FFmpeg](https://ffmpeg.org) on your PATH converts the Minecraft sounds to MP3.
+- **Arabic:** Settings (gear), **Behaviour**, tick **العربية (Arabic)**. It is saved for the next start.
+- **Start with Windows:** tick it on the main window.
 
-### Top bar
+### If something does not work
 
-![Top bar](docs/title-bar.png)
+| Problem | What to do |
+| --- | --- |
+| Others cannot hear you | Check that Discord's input is **CABLE Output**, that the program is running, and that **Enable audio effects** or the mic level is not zero |
+| The program says the virtual mic is turned off | In Windows *Sound settings*, turn **CABLE Output** and **CABLE Input** on |
+| "Another app is holding CABLE Input" | Close Voicemeeter or OBS, or change their output |
+| Your voice goes louder and quieter by itself | Tick **Raw mic (no auto gain)** |
+| Crackles or dropouts | In the **Mixer**, Sound card panel, set **Buffer** to **Safe** |
+| Echo covers your voice | Lower **Effects amount** (above 50 the echo starts to cover the voice) |
+| You cannot hear yourself | Tick **Hear myself** and check the **Speakers** choice |
+| A program's sound is not on the mic | Make sure it is playing sound, then pick it again in **Program on the mic** |
 
-A setup keeps every setting on the main window. Save one with **Save as**, then switch between your setups with the arrows or with a hotkey.
+### Uninstall
 
-### Microphone, speakers and noise isolation
+Close the program (tray icon, Exit) and delete its folder. To remove its settings, delete `%APPDATA%\OctopusEAX` and the registry key `HKEY_CURRENT_USER\Software\OctopusEAX`. VB-CABLE can be removed from Windows *Apps*.
 
-![Devices and noise isolation](docs/devices.png)
+## التثبيت
 
-Noise isolation cuts room noise, keyboard clicks and other voices out of your mic.
+### وش تحتاج
 
-- **Vocal** is a voice gate with its own low, mid and high lift. Its settings are in the Tone window.
-- **Gate** only shuts the mic between words.
-- **Clean**, **Studio** and **Broadcast** also clean up the sound.
+- ويندوز 10 أو 11، 64 بت
+- مايك (وسماعات أو سماعة رأس)
+- الكيبل الوهمي المجاني [VB-Audio Virtual Cable](https://vb-audio.com/Cable/). البرنامج ينزّله ويثبّته لك أول مرة (يحتاج نت وصلاحية المدير مرة وحدة)
 
-Higher values cut more noise but can clip quiet words. For Vocal, 50 is the normal strength.
+### الخطوات
 
-### Rooms
+1. **التنزيل.** افتح [صفحة آخر إصدار](https://github.com/3mooret/3mooret-EAX/releases/latest) ونزّل `3mooretEAX-v1.0.0-win64.zip` وفك الضغط في أي مكان (مثلًا `C:\3mooretEAX`). وتقدر تنزّل `3mooretEAX.exe` لحاله: هو البرنامج كامل، والخلفية المتحركة مدمجة فيه.
+2. **شغّل** `3mooretEAX.exe`. لو طلعت لك رسالة SmartScreen "Windows protected your PC" اضغط **More info** وبعدين **Run anyway** (البرنامج غير موقّع).
+3. **ثبّت المايك الوهمي** (أول مرة بس). النافذة تطلب المايك الوهمي. اضغط **Install** (ثبّت). البرنامج ينزّل VB-CABLE ويفك ضغطه. بعدين ويندوز يطلب الإذن: اضغط **Yes** وبعدها **Install Driver**. لو طلب إعادة التشغيل، أعد تشغيل الجهاز وافتح البرنامج من جديد. لو عندك VB-CABLE من قبل، تنتقل هالخطوة.
+4. **اختر أجهزتك.** فوق على اليسار اختر **المايك** و**السماعات**.
+5. **ضبط ديسكورد أو اللعبة.** في ديسكورد: *User Settings ثم Voice & Video ثم Input Device* واختر **CABLE Output (VB-Audio Virtual Cable)**. في اللعبة اختر نفس الجهاز كمايك. والشريط السفلي في البرنامج يعرض هالاسم بعد.
+6. **جرّب.** اختر غرفة، ارفع **قوة المؤثرات**، علّم على **اسمع صوتي** عشان تسمع النتيجة، وتكلم.
+7. **خلّ البرنامج شغّال** وأنت تتكلم. إغلاق النافذة يخفيها في صينية النظام (الأيقونة جنب الساعة). كليك يمين على الأيقونة واختر **Exit (طلوع)** عشان تقفل البرنامج.
 
-![Rooms](docs/rooms.png)
+### اختياري
 
-Pick a room from the list. **Effects amount** sets how much echo others hear: 0 turns it off, and above 50 the echo starts to cover your voice.
+- **مكتبة الأصوات** (مضحك، ماين كرافت، سينمائي، حيوانات): شغّل `tools\get-sounds.ps1` مرة وحدة. كليك يمين عليه واختر *Run with PowerShell*، أو في PowerShell: `powershell -ExecutionPolicy Bypass -File tools\get-sounds.ps1`. ينزّل نحو 190 صوت في `%APPDATA%\OctopusEAX\sounds\<التصنيف>`. المضحك والسينمائي والحيوانات من [Mixkit](https://mixkit.co/license/#sfxFree) (رخصة مجانية). وأصوات ماين كرافت من سيرفرات Mojang وهي ملك Mojang Studios: خلّها لاستخدامك وما توزعها. وبرنامج [FFmpeg](https://ffmpeg.org) في الـPATH يحوّل أصوات ماين كرافت إلى MP3.
+- **العربية:** الإعدادات (الترس) ثم **Behaviour** وعلّم على **العربية (Arabic)**. وتنحفظ للتشغيل الجاي.
+- **التشغيل مع الويندوز:** علّم عليه من النافذة الرئيسية.
 
-Under **Echo on**, choose what goes through the room: your voice, sound clips, the program's sound, or any mix of them.
+### لو شي ما اشتغل
 
-If your voice keeps getting louder and quieter by itself, try **Raw mic**.
+| المشكلة | الحل |
+| --- | --- |
+| الناس ما يسمعونك | تأكد إن إدخال ديسكورد هو **CABLE Output**، وإن البرنامج شغّال، وإن **Enable audio effects** أو مستوى المايك مو صفر |
+| البرنامج يقول إن المايك الوهمي مطفّي | في *Sound settings* بويندوز شغّل **CABLE Output** و**CABLE Input** |
+| "Another app is holding CABLE Input" | اقفل Voicemeeter أو OBS، أو غيّر خرجهم |
+| صوتك يعلى وينزل لحاله | علّم على **Raw mic (no auto gain)** |
+| تقطيع أو انقطاع | في **الميكسر** لوحة كرت الصوت، خلّ **Buffer** على **Safe** |
+| الصدى يغطي على صوتك | خفّض **قوة المؤثرات** (فوق الخمسين الصدى يبدأ يغطي) |
+| ما تسمع نفسك | علّم على **اسمع صوتي** وتأكد من اختيار **السماعات** |
+| صوت برنامج ما يطلع في المايك | تأكد إنه يشغّل صوت، وبعدين اخترّه من جديد في **برنامج على المايك** |
 
-### Voice mask
+### الحذف
 
-![Voice mask](docs/voice-mask.png)
+اقفل البرنامج (أيقونة الصينية ثم Exit) واحذف مجلده. ولحذف إعداداته احذف `%APPDATA%\OctopusEAX` ومفتاح الريجستري `HKEY_CURRENT_USER\Software\OctopusEAX`. وVB-CABLE تقدر تحذفه من *Apps* في ويندوز.
 
-Pick a mask from either list, then fine-tune it with pitch, size, the voice changer and speed.
+---
 
-Hold **Hold to repeat** to glitch your voice. The list next to it picks the glitch style, and the key button sets a key that holds the glitch from any program.
+# Features in English
 
-### Equalizer
+3mooret EAX sits between your microphone and Discord (or a game). Your voice goes in, the program changes it, and the result leaves through a virtual microphone called **CABLE Output (VB-Audio Virtual Cable)**. You pick that virtual microphone in Discord or the game. Sound clips, the soundboard and the sound of other programs can go into the same virtual microphone.
 
-![Equalizer](docs/equalizer.png)
+## 1. Top bar
 
-The equalizer shapes everything that goes to the mic. Drag a band up or down, and double-click it to put it back to 0. Save your own bands as a preset.
+<img src="docs/title-bar.png" width="600">
 
-### Sound clip
+| Control | What it does |
+| --- | --- |
+| **Mixer** | Opens the mixer window (section 9) |
+| **Tone** | Opens the tone window: a pad to make the voice deeper or sharper, and the Vocal settings (section 8) |
+| **Soundboard** | Opens the 12-pad soundboard (section 10) |
+| **Setup arrows and name** | A *setup* keeps every setting of the main window. The arrows switch between saved setups |
+| **Save as** | Saves all current settings as a setup with a name |
+| **Trash** | Deletes the setup in use |
+| **Gear** | Opens Settings (section 11) |
+| **Minimise / Close** | Hide the window to the system tray. Right-click the tray icon and choose Exit to quit. Turn this off with **Minimize to tray** |
 
-![Sound clip](docs/sound-clip.png)
+## 2. Microphone, speakers and noise isolation
 
-Paste a link or open a sound file, then press **Play**. Tick **Send to the mic** so others hear it, and **Hear it myself** to hear it too.
+<img src="docs/devices.png" width="600">
 
-### Program on the mic
+- **Microphone**: the microphone the program listens to. The refresh button looks again for devices you just plugged in.
+- **Speakers**: where you hear yourself and the program sound.
+- **Noise isolation** (tick box, arrows and a strength slider) cuts room noise, keyboard clicks and other voices. Five modes:
+  - **Vocal**: a voice gate with its own low, mid and high lift (set in the Tone window). Strength 50 is normal.
+  - **Gate**: only shuts the mic between words.
+  - **Clean**, **Studio**, **Broadcast**: also clean up the sound.
+  - Higher values cut more noise but can clip quiet words.
+- **Start with Windows**: opens the program when Windows starts.
+- **Minimize to tray**: the minimise and close buttons hide the window to the system tray instead of quitting.
 
-![Program on the mic](docs/program.png)
+## 3. Environment (rooms)
 
-Pick a running game or app, and its sound goes into your mic. With **Only I hear it**, the sound stays in your headphones and never reaches the mic.
+<img src="docs/rooms.png" width="600">
 
-### Recorder
+- **Environment list**: 32 echo rooms. 15 classic ones (Auditorium, Ball Park, Bathroom, Cathedral, Chapel, Church, Concert Hall, Garage, Haunted Cavern, Indoor Arena, Jazz Club, Living Room, Opera House, Small Room, Theater) and 17 new ones (Cave, Underwater, Forest, Mountains, Hangar, Sewer Pipe, Stone Corridor, Alley, Hallway, Parking Lot, Arena, Padded Cell, Quarry, Dizzy, Bell Tower, Metal Tank, Robot Room).
+- **Effects amount**: how much echo others hear. 0 turns it off. Above 50 the echo starts to cover your voice.
+- **Microphone level**: your mic volume. 100 is normal, above it the voice is pushed harder. The dB value is shown next to it.
+- **Enable audio effects**: master switch for the echo and the voice changes. Off, your mic goes through untouched.
+- **Hear myself**: plays your processed voice in your headphones.
+- **Wide echo in headphones**: spreads the echo left and right in your headphones only. Others hear the normal echo.
+- **Raw mic (no auto gain)**: turns off Windows automatic mic gain. Try it if your voice keeps getting louder and quieter by itself.
+- **CMSS 3D**: the sound card's 3D widening on the echo.
+- **Echo on**: choose what goes through the room: **My voice**, **Sound clip**, **Program**, or any mix.
 
-![Recorder](docs/recorder.png)
+## 4. Voice mask
 
-- **Record** records your voice with the effects, what you hear, or both at once.
-- **Last** keeps the last part of what was said or played all the time, from 5 seconds up to 10 minutes, and puts it into the editor with one click.
-- In the editor, click the wave to play from that point. Drag across it to pick a part, then cut it out or keep only that part.
-- When you're done, send the recording to the mic, or save it as MP3, WAV, M4A, WMA or FLAC.
+<img src="docs/voice-mask.png" width="600">
 
-Ctrl+Z and Ctrl+Y undo and redo.
+- **Two mask lists**: **X-Fi** (18 masks of the X-Fi card, for example Alien Brute, Demon, Robot, Elf) and **3mooret EAX masks** (24 more, for example Anonymous, Ghost, Chipmunk, Megaphone, Whisper). 42 in total.
+- **Pitch**: raise or lower your voice in Hz.
+- **Size**: makes the voice bigger (darker) or smaller.
+- **Voice changer**: from smaller to bigger in one move.
+- **Speed**: speak faster or slower. At other speeds others hear you a little late (the delay is shown). **Keep pitch** keeps the pitch while the speed changes.
+- **Off** button: puts the mask back to normal.
+- **Glitch**: hold the button to glitch your voice. The list picks the style (Repeat, Beep, Stutter, Reverse, Tape stop, Scratch, Robot, Crush, Chipmunk, Deep, Echo, Cut, Glitch). The key button sets a key that holds the glitch from any program.
+- **Mask on**: choose what gets the mask: **My voice**, **Sound clip**, **Program**.
 
-### Bottom bar
+## 5. Graphic equalizer and bass
 
-![Bottom bar](docs/bottom.png)
+<img src="docs/equalizer.png" width="600">
 
-The meter shows what goes into the mic. Drag the corner of the window to make it bigger or smaller, and double-click the corner to go back to the normal size.
+- **7 bands** (125 Hz to 8 kHz) from -12 to +12 dB, and an overall **Level**. Double-click a band to put it back to 0.
+- **Presets**: Flat, Bass, Treble, Vocal, Rock, Pop, Jazz, Classical, Dance, Acoustic. Save your own with the save button and delete it with the trash. **Default** resets everything.
+- **Enable equalizer**: turns the equalizer on or off. It shapes everything that goes to the mic.
+- **Bass slider** (under the equalizer): from -12 to +30 dB. It is added on top of the automatic bass boost that grows with the mic level.
 
-## Mixer
+## 6. Sound clip
 
-![Mixer](docs/mixer.png)
+<img src="docs/sound-clip.png" width="600">
 
-One strip each for the mic, sound clips, programs, the room and the output. Every strip has a fader in dB, a level meter and a mute button. The mic, clip and program strips also have solo, bass and treble, and the clip and program strips have mono and pan. The **Sound card** panel at the bottom picks the input and output devices, sets their Windows volume and chooses the buffer size.
+- Paste a link or open a sound file, then press **Play**. **Pause**, **Stop**, a **position** slider and **10 s** back/forward buttons.
+- **Volume** (100 is normal) and **Speed**. **Keep pitch** keeps the pitch while the speed changes. **Voice speed** matches the clip speed to your voice speed.
+- **Hear it myself**: you hear the clip too. **Send to the mic**: others hear it.
 
-## Tone window
+## 7. Program on the mic
 
-![Tone window](docs/tone.png)
+<img src="docs/program.png" width="600">
 
-Move the dot to make your voice deeper or sharper, with more or less middle. The **Vocal** part sets the Vocal noise isolation: how hard it cuts, the low, mid and high lift, and its output level.
+- Pick a running game or app and its sound goes into your mic. You can pick **up to 4 programs at once**: open the list, click a program to add it, click it again to remove it. The closed box shows the first name and how many more, for example `Chrome +2`. Choose `(none)` to remove all.
+- **Level**: program sound level (100 is normal).
+- **Only I hear it**: the sound stays in your headphones and never reaches the mic.
+- **Hear it through the card / from the app**: how you hear the program yourself.
+- The program sound can also get the echo and the mask (see Echo on and Mask on).
 
-## Soundboard
+## 8. Recorder and Tone window
 
-![Soundboard](docs/soundboard.png)
+<img src="docs/recorder.png" width="600">
 
-Add your sound files and put them on pads. Click a pad to play it, or give it a key that plays it from any program, even in a game. Pads follow the Sound clip volume, **Hear it myself** and **Send to the mic**.
+**Recorder** (below the program section):
+- **Record** records your voice with the effects, what you hear, or both at once. Choose with the two source buttons.
+- **Last** keeps the last part of what was said or played all the time, from 5 seconds up to 10 minutes, and puts it in the editor with one click. The arrows next to it pick how much to keep. Lit **quiet cut** removes silence automatically.
+- **Editor**: click the wave to play from that point, drag across it to pick a part. **Cut out** removes it, **Keep only** keeps only it. **Fade in / Fade out** soften the start and end. **Undo / Redo** (Ctrl+Z, Ctrl+Y). A button cuts the silence out of the whole recording.
+- **Send to mic** plays the recording into the mic. **Save as** saves MP3, WAV, M4A, WMA or FLAC. The folder is set in Settings.
 
-## Settings
+**Tone window:**
+- A square pad: move the dot to make the voice deeper or sharper, with more or less middle.
+- **Vocal** part: strength, low, mid and high lift and output level of the Vocal noise isolation.
 
-### Look
+## 9. Mixer
 
-![Settings, Look](docs/settings-look.png)
+<img src="docs/mixer.png" width="600">
 
-Change the colours, use your own background picture, make the window see-through, and pick the font.
+A window with five strips, like Voicemeeter:
 
-### Behaviour and hotkeys
+| Strip | Fader controls | Buttons |
+| --- | --- | --- |
+| **MIC** | Microphone level | HEAR, RAW, SOLO, MUTE, bass, treble |
+| **CLIP** | Sound clip volume | HEAR, MIC, SOLO, MONO, MUTE, pan, bass, treble |
+| **PROGRAM** | Program level | ONLY, CARD, SOLO, MONO, MUTE, pan, bass, treble |
+| **ROOM** | Effects amount | WIDE, CMSS, BYPASS |
+| **OUT** | Overall output level | EQ (equalizer on/off) |
 
-![Settings, Behaviour](docs/settings-hotkeys.png)
+- Faders are in dB (0 dB at 60% of the travel). Double-click a fader to reset it, use the mouse wheel to fine-tune.
+- **Animated level meters** with a peak hold line.
+- **SOLO** plays only that strip and silences the others. **MUTE** silences a strip. **MONO** sums left and right. **PAN** moves the sound left or right. **BASS** and **TREB** (treble) shape the strip. Drag the small sliders, double-click to reset. While you drag, the box under the fader shows the value.
+- **Sound card panel**: choose the **input** and **output** device with the arrows, set their **Windows volume** and **mute**, and choose the **buffer** size: **Low** (50 ms in, 40 ms out), **Normal** (100/80), **Safe** (200/160). Lower reacts faster, higher is safer against crackles.
 
-Hotkeys work in every program, even inside games. Click a key box and press the keys you want; right-click a box to clear it. Keys already used by the soundboard, the glitch or another program are refused.
+## 10. Soundboard
+
+<img src="docs/soundboard.png" width="600">
+
+- **12 pads**. Click a pad to play it. Give a pad a key (**Set key**) and it plays from any program, even inside a game. **Stop all** and a **Stop key** stop every sound.
+- Pick a sound in the list and press **Put on pad** (or double-click). **Add sounds** adds your own files, **Remove sound** removes one from the list. **Trim** picks a part, fades in and out. **Rename**, **Clear pad**.
+- **Sound library with categories**: use the arrows above the list to switch between **All**, **Funny**, **Minecraft**, **Cinematic**, **Animals** and **Mine** (your own sounds). The library is downloaded by `tools/get-sounds.ps1` into `%APPDATA%\OctopusEAX\sounds\<Category>`. Any folder you add there becomes a new category.
+- Pads follow the Sound clip volume, **Hear it myself** and **Send to the mic**.
+
+## 11. Settings
+
+<img src="docs/settings-look.png" width="600">
+
+**Look**
+- **Theme colour**: 14 colour themes and **Custom**. **Background brightness** slider.
+- **Fine tune**: change each colour (accent, text, faded text, panels, background, edges, highlight, off). Right-click to reset.
+- **Background picture**: pick a picture or an **animated GIF** (a GIF is built into the program). Sliders: **See-through panels** (glass), **Blur**, **Darken**, **Window opacity**.
+- **Font**: pick, add your own font file, size and bold.
+- **Reset look** brings the default look back.
+
+**Behaviour**
+- **Animations**, **Always on top**, **Remember where the window was**, **Show hints**.
+- **العربية (Arabic)**: switches the whole app to Arabic (Saudi dialect). Saved for the next start.
+- **Hotkeys** that work in every program, even in games: save the last part, start/stop recording, play the recording on the mic, audio effects on/off, voice mask on/off, echo on/off, noise isolation on/off, hear myself on/off, next setup, previous setup. Click a box and press the keys, right-click to clear.
+- **Saved clips folder**: where recordings are saved.
+
+## 12. Always on
+
+<img src="docs/bottom.png" width="600">
+
+- **Bottom meter** shows what goes into the mic. Drag the window corner to resize, double-click it for the normal size.
+- **Remembers your last settings** automatically: room, devices, levels and everything else (`%APPDATA%\OctopusEAX\last-session.ini`).
+- **System tray** and **Start with Windows**.
+- **Hints**: rest the mouse on any control for a short explanation.
+- **Virtual cable setup**: the program offers to install the free VB-Audio Virtual Cable the first time.
+
+## 13. For developers
+
+Rooms are rows in `src/presets/card_presets.hpp`, masks are rows in `src/voice/voice_masks.hpp`, and Arabic texts are in `src/ui/lang.hpp`. See the main README for the field-by-field guide.
+
+---
+
+
+
+<div dir="rtl">
+
+# الخصائص بالعربي
+
+برنامج 3mooret EAX يقف بين المايك وديسكورد (أو اللعبة). صوتك يدخل البرنامج، يغيّره، ثم يطلع من مايك وهمي اسمه **CABLE Output (VB-Audio Virtual Cable)**. أنت تختار هذا المايك في ديسكورد أو اللعبة. ويقدر يدخل نفس المايك الوهمي مقاطع صوتية ولوحة الأصوات وصوت البرامج الثانية.
+
+## ١. الشريط العلوي
+
+<img src="docs/title-bar.png" width="600">
+
+| العنصر | وش يسوي |
+| --- | --- |
+| **Mixer (الميكسر)** | يفتح نافذة الميكسر (القسم ٩) |
+| **Tone** | يفتح نافذة النغمة: مربع تخلّي صوتك أغلظ أو أحدّ، وإعدادات Vocal (القسم ٨) |
+| **Soundboard** | يفتح لوحة الأصوات ذات الـ12 زر (القسم ١٠) |
+| **أسهم الإعداد واسمه** | الإعداد (Setup) يحفظ كل إعدادات النافذة الرئيسية. الأسهم تنقلك بين الإعدادات المحفوظة |
+| **Save as** | يحفظ كل إعداداتك الحالية كإعداد باسم |
+| **سلة المحذوفات** | تحذف الإعداد المستخدم |
+| **الترس** | يفتح الإعدادات (القسم ١١) |
+| **تصغير / إغلاق** | يخفون النافذة في صينية النظام. للخروج الفعلي: كليك يمين على أيقونة الصينية واختر Exit. تقدر توقف هالسلوك من **Minimize to tray** |
+
+<img src="docs/main-ar.png" width="700">
+
+## ٢. المايك والسماعات وعزل الضوضاء
+
+- **Microphone (المايك):** المايك اللي يسمع منه البرنامج. زر التحديث يدوّر على الأجهزة اللي توك موصلها.
+- **Speakers (السماعات):** المكان اللي تسمع فيه نفسك وصوت البرنامج.
+- **Noise isolation (عزل الضوضاء):** يشيل ضوضاء الغرفة ونقرات الكيبورد والأصوات الثانية. فيه خمسة أوضاع:
+  - **Vocal:** بوابة صوت مع رفع للأصوات المنخفضة والمتوسطة والعالية (تضبطه من نافذة Tone). القوة 50 هي العادية.
+  - **Gate:** يقفل المايك بين الكلمات بس.
+  - **Clean** و**Studio** و**Broadcast:** ينظفون الصوت بعد.
+  - كل ما رفعت القيمة قطع ضوضاء أكثر، لكن ممكن يقص الكلمات الهادية.
+- **Start with Windows:** يفتح البرنامج مع تشغيل الويندوز.
+- **Minimize to tray:** زر التصغير وزر الإغلاق يخفون النافذة في الصينية بدل ما يقفلون البرنامج.
+
+## ٣. البيئة (الغرف)
+
+- **قائمة البيئات:** 32 غرفة صدى. 15 كلاسيكية (قاعة محاضرات، ملعب بيسبول، حمام، كاتدرائية، كنيسة صغيرة، كنيسة، قاعة حفلات، قراج، كهف مسكون، صالة مغطاة، نادي جاز، مجلس، دار أوبرا، غرفة صغيرة، سينما) و17 جديدة (كهف، تحت الماي، غابة، جبال، هنقر، ماسورة مجاري، ممر حجري، زقاق، ممر، موقف سيارات، ساحة، غرفة مبطّنة، محجر، دوّخني، برج الجرس، خزان معدني، غرفة الروبوت).
+- **Effects amount (قوة المؤثرات):** قد إيش الصدى اللي يسمعه الناس. صفر يطفّيه، وفوق الخمسين الصدى يبدأ يغطي على صوتك.
+- **Microphone level (مستوى المايك):** صوت المايك. المية عادي، وفوقها يرفع الصوت أكثر. تشوف قيمته بالديسيبل جنبه.
+- **Enable audio effects:** المفتاح الرئيسي للصدى وتغييرات الصوت. لو طفّيته المايك يطلع زي ما هو.
+- **Hear myself:** تسمع صوتك بعد المعالجة في السماعة.
+- **Wide echo in headphones:** يوزّع الصدى يمين ويسار في سماعتك بس. الناس يسمعون الصدى العادي.
+- **Raw mic:** يطفّي الرفع التلقائي للمايك في ويندوز. جرّبه لو صوتك يعلى وينزل لحاله.
+- **CMSS 3D:** توسيع الصوت ثلاثي الأبعاد حق كرت الصوت على الصدى.
+- **Echo on (الصدى على):** تختار وش يمر على الغرفة: **صوتي**، **مقطع صوت**، **البرنامج**، أو أي خليط منهم.
+
+## ٤. قناع الصوت
+
+- **قائمتان للأقنعة:** **X-Fi** (18 قناع من كرت X-Fi، مثل وحش فضائي وشيطان وروبوت وجنّي) و**أقنعة 3mooret EAX** (24 قناع ثاني، مثل مجهول وشبح وسنجاب ومكبّر صوت وهمس). المجموع 42.
+- **Pitch (النغمة):** يخلّي صوتك أرفع أو أغلظ بالهرتز.
+- **Size (الحجم):** يخلّي الصوت أكبر (أغلظ) أو أصغر.
+- **Voice changer (مغيّر الصوت):** من الأصغر للأكبر بحركة وحدة.
+- **Speed (السرعة):** تكلم أسرع أو أبطأ. مع السرعات الثانية اللي يسمعونك يوصلهم الصوت متأخر شوي (يظهر لك التأخير). **Keep pitch** يثبّت النغمة لما تتغير السرعة.
+- **زر Off:** يرجّع القناع للوضع العادي.
+- **Glitch (التقطيع):** امسك الزر عشان يتقطع صوتك. القائمة تختار النمط (تكرار، صفّارة، تهتهة، عكس، توقف شريط، خدش، روبوت، تكسير، سنجاب، غليظ، صدى، قطع، تقطيع). وزر المفتاح يحدد مفتاح يمسك التقطيع من أي برنامج.
+- **Mask on (القناع على):** تختار وش ياخذ القناع: **صوتي**، **مقطع صوت**، **البرنامج**.
+
+## ٥. الإكوالايزر والبيز
+
+- **7 نطاقات** (من 125 هرتز لين 8 كيلوهرتز) من -12 لين +12 ديسيبل، مع **Level** عام. دبل كليك على النطاق يرجّعه صفر.
+- **الإعدادات الجاهزة:** Flat وBass وTreble وVocal وRock وPop وJazz وClassical وDance وAcoustic. تقدر تحفظ إعدادك بزر الحفظ وتحذفه بالسلة. زر **Default** يرجّع كل شي.
+- **Enable equalizer:** يشغّل الإكوالايزر أو يطفّيه. وهو يأثر على كل شي يطلع بالمايك.
+- **شريط Bass** (تحت الإكوالايزر): من -12 لين +30 ديسيبل. ينضاف فوق رفع البيز التلقائي اللي يزيد مع مستوى المايك.
+
+## ٦. المقطع الصوتي
+
+- الصق رابط أو افتح ملف صوت واضغط **Play**. فيه **Pause** و**Stop** وشريط **الموضع** وأزرار **10 ثواني** رجوع وتقديم.
+- **Volume (الصوت)** (المية عادي) و**Speed (السرعة)**. **Keep pitch** يثبّت النغمة مع تغيير السرعة. **Voice speed** يخلّي سرعة المقطع تمشي مع سرعة صوتك.
+- **Hear it myself:** تسمع المقطع أنت. **Send to the mic:** يسمعه الناس.
+
+## ٧. برنامج على المايك
+
+- اختر لعبة أو برنامج شغّال ويطلع صوته في مايكك. تقدر تختار **لين 4 برامج مرة وحدة**: افتح القائمة واضغط على برنامج يضاف، واضغط عليه مرة ثانية يشيله. الصندوق المقفول يعرض الاسم الأول وكم باقي، مثل `Chrome +2`. الخيار `(ولا شي)` يشيل الكل.
+- **Level (المستوى):** صوت البرنامج (المية عادي).
+- **Only I hear it (أنا بس اللي أسمعه):** صوت البرنامج يبقى في سماعتك وما يوصل للمايك.
+- **Hear it through the card / from the app:** طريقة سماعك للبرنامج.
+- صوت البرنامج يقدر ياخذ الصدى والقناع بعد (من Echo on وMask on).
+
+## ٨. المسجّل ونافذة Tone
+
+**المسجّل** (تحت قسم البرنامج):
+- **Record (سجّل)** يسجّل صوتك مع المؤثرات، أو اللي تسمعه، أو الاثنين مع بعض. تختار بزرّي المصدر.
+- **Last (الأخير)** يحتفظ دايم بآخر جزء من اللي انقال أو انشغّل، من 5 ثواني لين 10 دقايق، ويحطه في المحرر بضغطة وحدة. الأسهم جنبه تحدد قد إيش يحتفظ. زر **القص الصامت** يشيل السكتات تلقائيًا.
+- **المحرر:** اضغط على الموجة تشتغل من النقطة، واسحب عليها عشان تحدد جزء. **Cut out** يشيله، و**Keep only** يخلّيه هو بس. **Fade in / Fade out** يخلّون البداية والنهاية ناعمة. **Undo / Redo** (Ctrl+Z وCtrl+Y). فيه زر يقص السكتات من كل التسجيل.
+- **Send to mic** يشغّل التسجيل في المايك. **Save as** يحفظ بصيغة MP3 أو WAV أو M4A أو WMA أو FLAC. ومجلد الحفظ من الإعدادات.
+
+**نافذة Tone:**
+- مربع: حرّك النقطة عشان يصير صوتك أغلظ أو أحدّ، بوسط أكثر أو أقل.
+- قسم **Vocal:** قوة عزل Vocal ورفع الأصوات المنخفضة والمتوسطة والعالية ومستوى الخرج.
+
+## ٩. الميكسر (Mixer)
+
+<img src="docs/mixer-ar.png" width="600">
+
+نافذة فيها خمس شرائح، شبه Voicemeeter:
+
+| الشريحة | الفيدر يتحكم في | الأزرار |
+| --- | --- | --- |
+| **MIC (المايك)** | مستوى المايك | HEAR وRAW وSOLO وMUTE وبيز وحدّة |
+| **CLIP (المقطع)** | صوت المقطع | HEAR وMIC وSOLO وMONO وMUTE وتوزيع وبيز وحدّة |
+| **PROGRAM (البرنامج)** | مستوى البرنامج | ONLY وCARD وSOLO وMONO وMUTE وتوزيع وبيز وحدّة |
+| **ROOM (الغرفة)** | قوة المؤثرات | WIDE وCMSS وBYPASS |
+| **OUT (الخرج)** | مستوى الخرج العام | EQ (تشغيل الإكوالايزر) |
+
+- الفيدرات بالديسيبل (الصفر عند 60% من المشوار). دبل كليك على الفيدر يرجّعه، وعجلة الفأرة تضبطه بدقة.
+- **عدّادات مستوى متحركة** مع خط يثبت عند أعلى قمة.
+- **SOLO (منفرد)** يشغّل الشريحة وحدها ويكتم الباقي. **MUTE (كتم)** يكتم الشريحة. **MONO (مونو)** يدمج اليسار واليمين. **PAN (توزيع)** يحرّك الصوت يمين أو يسار. **BASS (بيز)** و**TREB (حدّة)** يشكّلون الشريحة. اسحب الأشرطة الصغيرة ودبل كليك يرجّعها. وأثناء السحب الخانة تحت الفيدر تعرض القيمة.
+- **لوحة كرت الصوت:** تختار جهاز **الدخل** و**الخرج** بالأسهم، وتضبط **حجمهم في ويندوز** و**الكتم**، وتختار حجم **البفر**: **Low** (50 مللي ثانية دخل و40 خرج) أو **Normal** (100 و80) أو **Safe** (200 و160). الأقل يستجيب أسرع، والأعلى أأمن من التقطيع.
+
+## ١٠. لوحة الأصوات (Soundboard)
+
+- **12 زر**. اضغط على الزر يشتغل. اعطِ الزر مفتاح (**Set key**) وبيشتغل من أي برنامج حتى داخل اللعبة. **Stop all** و**Stop key** يوقفون كل الأصوات.
+- اختر صوت من القائمة واضغط **Put on pad** (أو دبل كليك). **Add sounds** تضيف ملفاتك، و**Remove sound** يشيل صوت من القائمة. **Trim** يحدد جزء ويضيف دخول وخروج تدريجي. وفيه **Rename** و**Clear pad**.
+- **مكتبة أصوات بتصنيفات:** استخدم الأسهم فوق القائمة للتنقل بين **الكل** و**مضحك** و**ماين كرافت** و**سينمائي** و**حيوانات** و**أصواتي** (ملفاتك). المكتبة تنزل بتشغيل `tools/get-sounds.ps1` في `%APPDATA%\OctopusEAX\sounds\<التصنيف>`. وأي مجلد تضيفه هناك يصير تصنيف جديد.
+- الأزرار تمشي على صوت المقطع وخياري **Hear it myself** و**Send to the mic**.
+
+## ١١. الإعدادات
+
+**المظهر (Look)**
+- **Theme colour:** 14 ثيم ألوان مع **Custom**. وشريط **إضاءة الخلفية**.
+- **Fine tune:** غيّر كل لون لحاله (الأساسي، النص، النص الباهت، اللوحات، الخلفية، الحدود، التمييز، الإيقاف). كليك يمين يرجّعه.
+- **صورة الخلفية:** اختر صورة أو **GIF متحرك** (فيه GIF مدمج في البرنامج). الأشرطة: **لوحات شفافة** (الزجاج) و**ضبابية** و**تغميق** و**شفافية النافذة**.
+- **الخط:** اختر خط أو أضف ملف خط، مع الحجم والعريض.
+- **Reset look** يرجّع المظهر الأصلي.
+
+**السلوك (Behaviour)**
+- **الحركات**، **دايم فوق**، **تذكّر مكان النافذة**، **أظهر التلميحات**.
+- **العربية (Arabic):** يحوّل البرنامج كله للعربي (باللهجة السعودية). ويتحفظ للتشغيل الجاي.
+- **الاختصارات** اللي تشتغل في كل البرامج حتى داخل الألعاب: حفظ آخر جزء، بدء وإيقاف التسجيل، تشغيل التسجيل في المايك، المؤثرات، قناع الصوت، الصدى، عزل الضوضاء، اسمع صوتي، الإعداد التالي، الإعداد السابق. اضغط على الصندوق وبعدين المفاتيح، وكليك يمين يمسح.
+- **مجلد المقاطع المحفوظة:** وين تنحفظ التسجيلات.
+
+## ١٢. دايم شغّال
+
+- **العدّاد السفلي** يعرض اللي يدخل المايك. اسحب زاوية النافذة عشان تكبّرها أو تصغّرها، ودبل كليك عليها يرجّع الحجم العادي.
+- **يتذكر آخر إعداداتك** تلقائي: الغرفة والأجهزة والمستويات وكل شي ثاني (`%APPDATA%\OctopusEAX\last-session.ini`).
+- **صينية النظام** و**التشغيل مع الويندوز**.
+- **التلميحات:** وقّف الماوس على أي عنصر تطلع لك شرح قصير.
+- **تثبيت الكيبل الوهمي:** البرنامج يعرض عليك تثبيت VB-Audio Virtual Cable المجاني أول مرة.
+
+## ١٣. للمطورين
+
+الغرف صفوف في `src/presets/card_presets.hpp`، والأقنعة صفوف في `src/voice/voice_masks.hpp`، والنصوص العربية في `src/ui/lang.hpp`. شوف README الرئيسي لشرح كل حقل.
+
+</div>
+
+
+---
 
 ## Building from source
 
