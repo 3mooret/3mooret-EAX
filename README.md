@@ -36,6 +36,8 @@
 | **Look** | Glass theme, rounded cards, animated GIF background, 14 colour themes |
 | **Handy** | System tray, remembers your last settings, Arabic (Saudi dialect) |
 
+> **Full guide in English and Arabic / الدليل الكامل بالإنجليزي والعربي:** [docs/FEATURES.md](docs/FEATURES.md) explains every control and feature.
+
 ## Install
 
 1. Download `3mooretEAX-v1.0.0-win64.zip` from the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and unzip it.
