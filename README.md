@@ -1,42 +1,84 @@
-<p align="center">
-  <img src="docs/main.png" alt="3mooret EAX" width="720">
-</p>
-
-<h1 align="center">3mooret EAX </h1>
+<h1 align="center">3mooret EAX</h1>
 
 <p align="center">
-  Free and open-source voice effects for Discord and games on Windows.<br>
-  Modified by <b>3mooret</b> &bull; <b>AMMAR</b> &bull; Instagram <a href="https://www.instagram.com/064_/"><b>@064_</b></a>
+  <b>Voice effects, a real mixer and a soundboard for Discord and games on Windows.</b><br>
+  Free and open source. Glass design, animated background, Arabic and English.
 </p>
 
 <p align="center">
-  <a href="https://github.com/ALMASONYH/OctopusEAX/releases/download/Release/build.rar"><b>Download the original release</b></a>
-  &nbsp;|&nbsp;
-  <a href="#building-from-source"><b>Build this edition</b></a>
+  <a href="https://github.com/3mooret/3mooret-EAX/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-latest%20release-8b5cf6?style=for-the-badge"></a>
+  <img alt="Windows 10/11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-3b82f6?style=for-the-badge">
+  <img alt="License MIT" src="https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge">
 </p>
 
-3mooret EAX puts your voice in a room, changes how it sounds, cleans up the noise around you and plays sounds into your mic.
+<p align="center">
+  <img src="docs/main.png" alt="3mooret EAX main window" width="860">
+</p>
 
-- 15 echo rooms, from Bathroom to Haunted Cavern
-- 42 voice masks, pitch, size and speed
-- Noise isolation with 5 modes
-- 7-band equalizer, a manual **bass control** and a tone pad
-- Sound clips, a 12-pad soundboard, and the sound of **up to 4 programs at once** on the mic
-- A recorder that keeps the last few minutes, and hotkeys that work inside games
+<p align="center">
+  Made by <b>3mooret</b> &bull; <b>AMMAR</b> &bull; Instagram <a href="https://www.instagram.com/064_/"><b>@064_</b></a>
+</p>
 
-![3mooret EAX main window](docs/main.png)
+---
+
+## Why 3mooret EAX
+
+| | |
+| --- | --- |
+| **Rooms** | 32 echo rooms, from Bathroom and Cathedral to Cave, Hangar and Haunted Cavern |
+| **Voice** | 42 voice masks, pitch, size, speed and a glitch pad |
+| **Clean mic** | Noise isolation with 5 modes, a 7-band equalizer and a bass control from -12 to +30 dB |
+| **Mixer** | A Voicemeeter-style mixer: faders in dB, animated level meters, solo, mono, pan, bass, treble |
+| **Sound card** | Pick the input and output, set their Windows volume, choose the buffer size |
+| **Programs** | Play the sound of up to **4 programs at once** into your mic |
+| **Soundboard** | 12 pads with global hotkeys and a sound library in categories |
+| **Recorder** | Keeps the last minutes of what was said or played, with an editor |
+| **Look** | Glass theme, rounded cards, animated GIF background, 14 colour themes |
+| **Handy** | System tray, remembers your last settings, Arabic (Saudi dialect) |
+
+## Install
+
+1. Download `3mooretEAX-v1.0.0-win64.zip` from the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and unzip it.
+2. Run `3mooretEAX.exe`. It offers to set up the free [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) the first time.
+3. In Discord or your game, set your input device to **CABLE Output (VB-Audio Virtual Cable)**.
+4. Pick a room, raise **Effects amount**, and tick **Hear myself** to hear the result.
+
+Windows may warn about an unsigned program. Click **More info**, then **Run anyway**.
+
+## A look around
+
+<table>
+  <tr>
+    <td><img src="docs/mixer.png" alt="Mixer"></td>
+    <td><img src="docs/soundboard.png" alt="Soundboard"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Mixer</b></td>
+    <td align="center"><b>Soundboard</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/settings-look.png" alt="Settings, Look"></td>
+    <td><img src="docs/tone.png" alt="Tone"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Look settings</b></td>
+    <td align="center"><b>Tone</b></td>
+  </tr>
+</table>
 
 ## What is new in this edition
 
 | Feature | What it does |
 | --- | --- |
-| Glass theme | Translucent panels, a blurred picture or animated GIF behind the window. The default is `res/background.gif`. Replace it with your own (or add `res/background.jpg`) before building, or pick one in Settings, Look |
-| Several programs on the mic | In **Program on the mic**, click a program to add it and click again to remove it. Up to 4 at once, each with its own capture |
-| System tray | The minimise button hides the window to the tray. Click the icon to bring it back, right-click for Open and Exit |
-| Bass control | A slider from -12 to +12 dB under the equalizer, added on top of the automatic bass boost |
-| Sound library with categories | Funny, Minecraft, Cinematic and Animals, plus your own sounds under **Mine**. Pick a category above the sound list and put any sound on a pad with its own hotkey |
-| Remembers your last settings | The room, devices, levels and every other setting come back as you left them (`%APPDATA%\OctopusEAX\last-session.ini`) |
-| Credits | The About window lists the people behind this edition |
+| Glass theme | Translucent rounded cards over a blurred picture or animated GIF. The default is `res/background.gif`. Replace it with your own (or add `res/background.jpg`) before building, or pick one in Settings, Look |
+| Mixer | Strips for the mic, clips, programs, room and output, plus the Sound card panel |
+| Several programs on the mic | In **Program on the mic**, click a program to add it and click again to remove it. Up to 4 at once |
+| System tray | The minimise and close buttons hide the window to the tray. Right-click the icon for Open and Exit. Turn it off with **Minimize to tray** |
+| Bass control | A slider from -12 to +30 dB under the equalizer, added on top of the automatic bass boost |
+| Sound library | Funny, Minecraft, Cinematic and Animals, plus your own sounds under **Mine**. Pick a category above the sound list and put any sound on a pad |
+| More rooms | 17 new rooms such as Cave, Underwater, Forest, Hangar, Stone Corridor and Robot Room |
+| Arabic | Settings, Behaviour, **العربية (Arabic)**. Texts, rooms and masks are translated in the Saudi dialect |
+| Last settings | The room, devices, levels and everything else come back as you left them (`%APPDATA%\OctopusEAX\last-session.ini`) |
 
 ### Getting the sound library
 
@@ -50,13 +92,22 @@ powershell -ExecutionPolicy Bypass -File tools\get-sounds.ps1
 - **Minecraft** sounds are downloaded from Mojang's official asset servers. They belong to Mojang Studios, so keep them for your own use and do not redistribute them.
 - [FFmpeg](https://ffmpeg.org) on your PATH converts the Minecraft sounds to MP3. Without it they stay as OGG.
 
-Any folder you add under `sounds` becomes a new category the next time 3mooret EAX starts.
+Any folder you add under `sounds` becomes a new category the next time the app starts.
+
+## بالعربي
+
+**3mooret EAX** برنامج مجاني مفتوح المصدر يضيف مؤثرات على صوتك في ديسكورد والألعاب على ويندوز: غرف صدى، أقنعة صوت، عزل ضوضاء، إكوالايزر، ميكسر شبيه بـ Voicemeeter، ولوحة أصوات بمفاتيح تشتغل داخل الألعاب.
+
+- حمّل آخر إصدار من صفحة [Releases](https://github.com/3mooret/3mooret-EAX/releases/latest) وفك الضغط وشغّل `3mooretEAX.exe`.
+- اختر المايك والسماعات، واختر في ديسكورد المايك الوهمي **CABLE Output**.
+- لتفعيل العربية: الإعدادات ثم السلوك ثم **العربية (Arabic)**.
+- أصوات التصنيفات (مضحك، ماين كرافت، سينمائي، حيوانات) تُنزَّل بتشغيل `tools\get-sounds.ps1`.
 
 ## Credits
 
-- **Modified by:** 3mooret, AMMAR. Instagram [@064_](https://www.instagram.com/064_/)
-- **Original OctopusEAX:** MasonGroup. Contributors and thanks are in the About window of the app
-- Sound effects: Mixkit and Mojang Studios, as described above
+- **Made by:** 3mooret and AMMAR. Instagram [@064_](https://www.instagram.com/064_/)
+- **Based on OctopusEAX** by MasonGroup (MIT licence). Contributors and thanks are in the About window of the app. The original release is [here](https://github.com/ALMASONYH/OctopusEAX/releases/download/Release/build.rar).
+- Sound effects: Mixkit and Mojang Studios, as described above.
 
 ## What you need
 
