@@ -30,7 +30,7 @@
 
 | Feature | What it does |
 | --- | --- |
-| Glass theme | Translucent panels, a blurred picture or animated GIF behind the window. Put your own at `res/background.gif` or `res/background.jpg` before building, or pick one in Settings, Look |
+| Glass theme | Translucent panels, a blurred picture or animated GIF behind the window. The default is `res/background.gif`. Replace it with your own (or add `res/background.jpg`) before building, or pick one in Settings, Look |
 | Several programs on the mic | In **Program on the mic**, click a program to add it and click again to remove it. Up to 4 at once, each with its own capture |
 | System tray | The minimise button hides the window to the tray. Click the icon to bring it back, right-click for Open and Exit |
 | Bass control | A slider from -12 to +12 dB under the equalizer, added on top of the automatic bass boost |
