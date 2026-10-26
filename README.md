@@ -146,6 +146,12 @@ Ctrl+Z and Ctrl+Y undo and redo.
 
 The meter shows what goes into the mic. Drag the corner of the window to make it bigger or smaller, and double-click the corner to go back to the normal size.
 
+## Mixer
+
+![Mixer](docs/mixer.png)
+
+One strip each for the mic, sound clips, programs, the room and the output. Every strip has a fader in dB, a level meter and a mute button. The mic, clip and program strips also have solo, bass and treble, and the clip and program strips have mono and pan. The **Sound card** panel at the bottom picks the input and output devices, sets their Windows volume and chooses the buffer size.
+
 ## Tone window
 
 ![Tone window](docs/tone.png)
