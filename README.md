@@ -58,7 +58,7 @@
 
 ### Steps
 
-1. **Download.** Open the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and download `3mooretEAX-v1.0.0-win64.zip`. Unzip it anywhere (for example `C:\3mooretEAX`). You can also download only `3mooretEAX.exe`: it is the whole program, and the animated background is built into it.
+1. **Download.** Open the [latest release](https://github.com/3mooret/3mooret-EAX/releases/latest) and download `3mooretEAX-v1.1.0-win64.zip`. Unzip it anywhere (for example `C:\3mooretEAX`). You can also download only `3mooretEAX.exe`: it is the whole program, and the animated background is built into it.
 2. **Run** `3mooretEAX.exe`. If Windows SmartScreen says "Windows protected your PC", click **More info**, then **Run anyway** (the program is not code-signed).
 3. **Install the virtual microphone** (first run only). The window asks for the virtual mic. Press **Install**. The program downloads VB-CABLE and unpacks it. Windows then asks for permission: click **Yes**, then **Install Driver**. When it asks to restart, restart your PC and open 3mooret EAX again. If you already have VB-CABLE, this step is skipped.
 4. **Pick your devices.** At the top left choose your **Microphone** and your **Speakers or headphones**.
@@ -99,7 +99,7 @@ Close the program (tray icon, Exit) and delete its folder. To remove its setting
 
 ### الخطوات
 
-1. **التنزيل.** افتح [صفحة آخر إصدار](https://github.com/3mooret/3mooret-EAX/releases/latest) ونزّل `3mooretEAX-v1.0.0-win64.zip` وفك الضغط في أي مكان (مثلًا `C:\3mooretEAX`). وتقدر تنزّل `3mooretEAX.exe` لحاله: هو البرنامج كامل، والخلفية المتحركة مدمجة فيه.
+1. **التنزيل.** افتح [صفحة آخر إصدار](https://github.com/3mooret/3mooret-EAX/releases/latest) ونزّل `3mooretEAX-v1.1.0-win64.zip` وفك الضغط في أي مكان (مثلًا `C:\3mooretEAX`). وتقدر تنزّل `3mooretEAX.exe` لحاله: هو البرنامج كامل، والخلفية المتحركة مدمجة فيه.
 2. **شغّل** `3mooretEAX.exe`. لو طلعت لك رسالة SmartScreen "Windows protected your PC" اضغط **More info** وبعدين **Run anyway** (البرنامج غير موقّع).
 3. **ثبّت المايك الوهمي** (أول مرة بس). النافذة تطلب المايك الوهمي. اضغط **Install** (ثبّت). البرنامج ينزّل VB-CABLE ويفك ضغطه. بعدين ويندوز يطلب الإذن: اضغط **Yes** وبعدها **Install Driver**. لو طلب إعادة التشغيل، أعد تشغيل الجهاز وافتح البرنامج من جديد. لو عندك VB-CABLE من قبل، تنتقل هالخطوة.
 4. **اختر أجهزتك.** فوق على اليسار اختر **المايك** و**السماعات**.

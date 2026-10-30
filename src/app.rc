@@ -5,8 +5,8 @@
 203 RCDATA "../res/background.gif"
 
 1 VERSIONINFO
-FILEVERSION     1,0,0,0
-PRODUCTVERSION  1,0,0,0
+FILEVERSION     1,1,0,0
+PRODUCTVERSION  1,1,0,0
 FILEOS          0x40004L
 FILETYPE        0x1L
 {
@@ -16,13 +16,13 @@ FILETYPE        0x1L
     {
       VALUE "CompanyName",      "Octopus copyright"
       VALUE "FileDescription",  "3mooret EAX Audio Effects Console"
-      VALUE "FileVersion",      "1.0.0.0"
+      VALUE "FileVersion",      "1.1.0.0"
       VALUE "InternalName",     "3mooretEAX"
       VALUE "LegalCopyright",   "Copyright (c) Octopus copyright - all rights reserved"
       VALUE "LegalTrademarks",  "3mooret EAX"
       VALUE "OriginalFilename", "3mooretEAX.exe"
       VALUE "ProductName",      "3mooret EAX"
-      VALUE "ProductVersion",   "1.0.0.0"
+      VALUE "ProductVersion",   "1.1.0.0"
     }
   }
   BLOCK "VarFileInfo"

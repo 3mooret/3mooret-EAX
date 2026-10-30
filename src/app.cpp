@@ -347,7 +347,7 @@ struct Shared {
     std::atomic<bool> restart{true};
     std::atomic<bool> quit{false};
     std::mutex devMx;
-    std::wstring micId, spkId;
+    std::wstring micId, spkId, outId;   // outId: where the processed voice goes; empty means the CABLE Input
     std::atomic<bool> running{false};
     std::atomic<bool> statusWarn{false};
     std::atomic<bool> needCable{false};
@@ -427,6 +427,14 @@ static Dev findCableRender(DWORD states) {
         if (best.id.empty()) best = d;
     }
     return best;
+}
+
+// The device the processed voice is sent to: the one picked in the mixer, else the VB-Audio CABLE Input.
+static Dev findOutputRender(const std::wstring& id) {
+    if (!id.empty())
+        for (auto& d : listDevices(eRender, DEVICE_STATE_ACTIVE))
+            if (d.id == id) return d;
+    return findCableRender(DEVICE_STATE_ACTIVE);
 }
 
 static std::wstring findParkRender(bool silentOk) {
@@ -1158,10 +1166,10 @@ static void audioThread() {
     while (!g.quit.load()) {
         if (!g.restart.exchange(false)) { Sleep(50); continue; }
 
-        std::wstring micId, spkId;
-        { std::lock_guard<std::mutex> lk(g.devMx); micId = g.micId; spkId = g.spkId; }
+        std::wstring micId, spkId, outId;
+        { std::lock_guard<std::mutex> lk(g.devMx); micId = g.micId; spkId = g.spkId; outId = g.outId; }
 
-        const Dev cable = findCableRender(DEVICE_STATE_ACTIVE);
+        const Dev cable = findOutputRender(outId);
 
         IMMDevice *dMic = nullptr, *dSpk = nullptr, *dCab = nullptr;
         IAudioClient *acMic = nullptr, *acSpk = nullptr, *acCab = nullptr;
@@ -5976,6 +5984,7 @@ static bool settingsFileSave(const std::wstring& path) {
     { std::lock_guard<std::mutex> lk(g.devMx); mic = clip::narrow(g.micId); spk = clip::narrow(g.spkId); }
     fprintf(f, "# OctopusEAX settings\n");
     fprintf(f, "mic=%s\nspk=%s\n", mic.c_str(), spk.c_str());
+    { std::lock_guard<std::mutex> lk(g.devMx); fprintf(f, "out=%s\n", clip::narrow(g.outId).c_str()); }
     fprintf(f, "preset=%d\namount=%d\nmic_level=%d\n", g.preset.load(), g.amount.load(), g.micLevel.load());
     fprintf(f, "effects=%d\necho_on=%d\nmask_on=%d\nmonitor=%d\nwide=%d\nraw=%d\ncmss=%d\ncard_mic=%d\n", g.enabled.load() ? 1 : 0, g.echoOn.load(), g.changeOn.load(), g.monitor.load() ? 1 : 0,
             g.wide.load() ? 1 : 0, g.rawMic.load() ? 1 : 0, g.cmss.load() ? 1 : 0, g.cardMic.load() ? 1 : 0);
@@ -6030,7 +6039,10 @@ static void settingsFileLoad(const std::wstring& path) {
         if (eq == std::string::npos) continue;
         std::string k = s.substr(0, eq), v = s.substr(eq + 1);
         int iv = atoi(v.c_str());
-        if (k == "mic" || k == "spk") {
+        if (k == "out") {
+            std::lock_guard<std::mutex> lk(g.devMx);
+            g.outId = clip::widen(v);
+        } else if (k == "mic" || k == "spk") {
             std::wstring id = clip::widen(v);
             auto& list = (k == "mic") ? uiMics : uiSpks;
             for (size_t i = 0; i < list.size(); ++i) if (list[i].id == id) {
@@ -6891,7 +6903,7 @@ static void paintBehaviour(HDC dc) {
     label(dc, 24, LK_BEH_PANELS[0].top + 8, L"Window", C_GOLD, fntBold);
     panelHead(dc, LK_BEH_PANELS[1], L"Hotkeys",
               keyListen >= 0 ? L"press the keys, Backspace for none, Esc to keep" : L"work in every program, even in games");
-    drawCheck(dc, R_BH_LANG.left, R_BH_LANG.top, lang::arabic, ICO_NONE, L"العربية (Arabic)");
+    drawCheck(dc, R_BH_LANG.left, R_BH_LANG.top, lang::arabic, ICO_NONE, L"ط§ظ„ط¹ط±ط¨ظٹط© (Arabic)");
     for (const BehaviourOption& o : BEHAVIOUR) {
         drawCheck(dc, o.r->left, o.r->top, *o.on, o.icon, o.name);
         label(dc, o.r->left + optionText(o.icon), o.r->top + 20, o.note, C_DIM, fntUI);
@@ -7724,7 +7736,7 @@ static void openToneBox(HWND owner) {
 }
 
 // ---- Mixer: strips with faders, meters and buttons, laid out like Voicemeeter ----
-static const int MX_W = 642, MX_H = 628, MX_STRIPS = 5, MX_STRIP_W = 118, MX_GAP = 6, MX_TOP = 46, MX_SEGS = 40;
+static const int MX_W = 642, MX_H = 660, MX_STRIPS = 5, MX_STRIP_W = 118, MX_GAP = 6, MX_TOP = 46, MX_SEGS = 40;
 static const int MX_FADER_T = 178, MX_FADER_H = 150, MX_STRIP_END = MX_TOP + 428;
 static const RECT RX_CLOSE = {MX_W - 34, 5, MX_W - 8, 29};
 enum { MX_MIC, MX_CLIP, MX_APP, MX_FX, MX_OUT };
@@ -7894,7 +7906,7 @@ static RECT mxBottomRect(int s) {
 }
 
 // ---- Sound card panel: pick the devices, set their Windows volume and the buffer size ----
-enum { MC_IN_PREV = 1000, MC_IN_NEXT, MC_IN_VOL, MC_IN_MUTE, MC_OUT_PREV, MC_OUT_NEXT, MC_OUT_VOL, MC_OUT_MUTE, MC_BUF0, MC_BUF1, MC_BUF2, MC_END };
+enum { MC_IN_PREV = 1000, MC_IN_NEXT, MC_IN_VOL, MC_IN_MUTE, MC_OUT_PREV, MC_OUT_NEXT, MC_OUT_VOL, MC_OUT_MUTE, MC_VOUT_PREV, MC_VOUT_NEXT, MC_BUF0, MC_BUF1, MC_BUF2, MC_END };
 static const RECT RC_PANEL = {12, MX_STRIP_END + 10, MX_W - 12, MX_H - 12};
 static RECT mcRow(int row) { const int y = RC_PANEL.top + 34 + row * 30; return RECT{24, y, MX_W - 24, y + 24}; }
 static RECT mcPrev(int row) { const RECT r = mcRow(row); return RECT{r.left + 52, r.top, r.left + 74, r.bottom}; }
@@ -7902,7 +7914,7 @@ static RECT mcName(int row) { const RECT r = mcRow(row); return RECT{r.left + 78
 static RECT mcNext(int row) { const RECT r = mcRow(row); return RECT{r.left + 254, r.top, r.left + 276, r.bottom}; }
 static RECT mcVol(int row) { const RECT r = mcRow(row); return RECT{r.left + 296, r.top + 1, r.left + 452, r.bottom - 1}; }
 static RECT mcMute(int row) { const RECT r = mcRow(row); return RECT{r.right - 66, r.top, r.right, r.bottom}; }
-static RECT mcBuf(int k) { const RECT r = mcRow(2); return RECT{r.left + 52 + k * 74, r.top, r.left + 52 + k * 74 + 70, r.bottom}; }
+static RECT mcBuf(int k) { const RECT r = mcRow(3); return RECT{r.left + 52 + k * 74, r.top, r.left + 52 + k * 74 + 70, r.bottom}; }
 
 struct EpState { float vol = 0.0f; bool mute = false, ok = false; };
 static EpState epMic, epSpk;
@@ -7971,6 +7983,34 @@ static void mcStep(bool mic, int dir) {
     epPolled = 0;
 }
 
+// Row 2: where the processed voice goes. Auto is the VB-Audio CABLE Input; any other playback device can be picked,
+// for example a second virtual cable or Voicemeeter.
+static std::wstring mcOutName;
+
+static std::wstring mcOutLabel() {
+    std::wstring id;
+    { std::lock_guard<std::mutex> lk(g.devMx); id = g.outId; }
+    const Dev d = findOutputRender(id);
+    if (id.empty()) return L"Auto: " + (d.name.empty() ? std::wstring(L"CABLE Input not found") : d.name);
+    return d.id == id ? d.name : L"Not found, using " + (d.name.empty() ? std::wstring(L"CABLE Input") : d.name);
+}
+
+static void mcOutStep(int dir) {
+    std::wstring cur, spk;
+    { std::lock_guard<std::mutex> lk(g.devMx); cur = g.outId; spk = g.spkId; }
+    std::vector<std::wstring> ids{L""};
+    for (const Dev& d : listDevices(eRender, DEVICE_STATE_ACTIVE))
+        if (!d.id.empty() && d.id != spk) ids.push_back(d.id);
+    int i = 0;
+    for (size_t k = 0; k < ids.size(); ++k) if (ids[k] == cur) i = (int)k;
+    const int n = (int)ids.size();
+    i = ((i + dir) % n + n) % n;
+    { std::lock_guard<std::mutex> lk(g.devMx); g.outId = ids[(size_t)i]; }
+    g.restart = true;
+    settingsSave();
+    mcOutName = mcOutLabel();
+}
+
 static float mcVolFromX(int row, int x) {
     const RECT r = mcVol(row);
     return (float)(clampInt(x, r.left + 6, r.right - 6) - (r.left + 6)) / (float)(r.right - r.left - 12);
@@ -7986,6 +8026,7 @@ static int mxHit(POINT p) {
             r = mcVol(row); InflateRect(&r, 4, 4); if (PtInRect(&r, p)) return base + 2;
             r = mcMute(row); if (PtInRect(&r, p)) return base + 3;
         }
+        { RECT r = mcPrev(2); if (PtInRect(&r, p)) return MC_VOUT_PREV; r = mcNext(2); if (PtInRect(&r, p)) return MC_VOUT_NEXT; }
         for (int k = 0; k < 3; ++k) { const RECT r = mcBuf(k); if (PtInRect(&r, p)) return MC_BUF0 + k; }
         return -1;
     }
@@ -8091,6 +8132,7 @@ static void mxTick() {
     if (now - epPolled > 500 && mcDrag < 0) {
         epMic = epRead(mcDeviceId(true));
         epSpk = epRead(mcDeviceId(false));
+        mcOutName = mcOutLabel();
         epPolled = now;
     }
     mxInit = true;
@@ -8308,7 +8350,26 @@ static void mcPaint(HDC dc) {
     }
     mcPaintRow(dc, 0);
     mcPaintRow(dc, 1);
-    const RECT br = mcRow(2);
+    {
+        const RECT r = mcRow(2);
+        label(dc, r.left, r.top + 5, L"Mic out", C_DIM, fntUI);
+        iconButton(dc, mcPrev(2), ICO_PREV, nullptr, mxHot == MC_VOUT_PREV);
+        iconButton(dc, mcNext(2), ICO_NEXT, nullptr, mxHot == MC_VOUT_NEXT);
+        const RECT nm = mcName(2);
+        panel(dc, nm, mixc(C_BACK, RGB(0, 0, 0), 0.3), C_EDGE);
+        RECT tr = {nm.left + 8, nm.top, nm.right - 6, nm.bottom};
+        SetBkMode(dc, TRANSPARENT);
+        SetTextColor(dc, C_TEXT);
+        HGDIOBJ of = SelectObject(dc, fntUI);
+        drawText(dc, mcOutName.c_str(), -1, &tr, DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX);
+        SelectObject(dc, of);
+        RECT hr = {r.left + 296, r.top, r.right, r.bottom};
+        SetTextColor(dc, C_DIM);
+        of = SelectObject(dc, fntUI);
+        drawText(dc, L"Where your voice goes. Pick it as the microphone in Discord.", -1, &hr, DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX);
+        SelectObject(dc, of);
+    }
+    const RECT br = mcRow(3);
     label(dc, br.left, br.top + 5, L"Buffer", C_DIM, fntUI);
     static const wchar_t* N[3] = {L"Low", L"Normal", L"Safe"};
     for (int k = 0; k < 3; ++k) {
@@ -8406,7 +8467,8 @@ static LRESULT CALLBACK mixerProc(HWND h, UINT m, WPARAM w, LPARAM l) {
             return 0;
         }
         if (hit >= MC_IN_PREV) {
-            if (hit == MC_IN_PREV || hit == MC_IN_NEXT) mcStep(true, hit == MC_IN_NEXT ? 1 : -1);
+            if (hit == MC_VOUT_PREV || hit == MC_VOUT_NEXT) mcOutStep(hit == MC_VOUT_NEXT ? 1 : -1);
+            else if (hit == MC_IN_PREV || hit == MC_IN_NEXT) mcStep(true, hit == MC_IN_NEXT ? 1 : -1);
             else if (hit == MC_OUT_PREV || hit == MC_OUT_NEXT) mcStep(false, hit == MC_OUT_NEXT ? 1 : -1);
             else if (hit == MC_IN_VOL || hit == MC_OUT_VOL) {
                 mcDrag = hit == MC_IN_VOL ? 0 : 1;
@@ -8570,7 +8632,7 @@ static void paintAbout(HDC dc, const RECT& rc) {
     label(dc, 24, 162, L"FREEMASONRY", C_TEXT, fntBold);
     label(dc, 24, 182, L"SALEMLY", C_TEXT, fntBold);
     label(dc, 24, 214, L"Modified by :", C_GOLD, fntBold);
-    label(dc, 24, 238, L"3mooret  •  AMMAR", C_TEXT, fntBold);
+    label(dc, 24, 238, L"3mooret  â€¢  AMMAR", C_TEXT, fntBold);
     {
         label(dc, 24, 258, L"IG:", C_TEXT, fntBold);
         SIZE pre{}, sz{};
@@ -12112,7 +12174,7 @@ static void drawItem(LPDRAWITEMSTRUCT d) {
     } else if (d->hwndItem == hApp) {
         if (i == 0) wcscpy_s(txt, lang::tr(L"(none)"));
         else if (i - 1 < uiApps.size()) {
-            const std::wstring s = (appPicked(uiApps[i - 1].pid) ? L"✔ " : L"    ") + uiApps[i - 1].name;
+            const std::wstring s = (appPicked(uiApps[i - 1].pid) ? L"âœ” " : L"    ") + uiApps[i - 1].name;
             wcsncpy_s(txt, s.c_str(), 255);
         }
     } else if (d->hwndItem == hEqBox) {
@@ -13752,6 +13814,148 @@ static void ghostClear() {
     dropStop();
 }
 
+// ---- Update notice: asks GitHub for the latest release and tells the user once about each new version ----
+static const wchar_t* APP_VERSION = L"1.1.0";
+static const wchar_t* RELEASE_API = L"https://api.github.com/repos/3mooret/3mooret-EAX/releases/latest";
+static const UINT WM_UPDATE = WM_APP + 61;
+struct UpdateInfo { std::wstring tag, notes, url; };
+
+static std::vector<int> versionParts(const std::wstring& v) {
+    std::vector<int> out;
+    int cur = 0;
+    bool any = false;
+    for (wchar_t c : v) {
+        if (c >= L'0' && c <= L'9') { cur = cur * 10 + (c - L'0'); any = true; }
+        else if (c == L'.') { out.push_back(cur); cur = 0; any = false; }
+        else if (any) break;
+    }
+    if (any) out.push_back(cur);
+    return out;
+}
+
+static bool versionNewer(const std::wstring& a, const std::wstring& b) {
+    const std::vector<int> x = versionParts(a), y = versionParts(b);
+    for (size_t i = 0; i < std::max(x.size(), y.size()); ++i) {
+        const int xi = i < x.size() ? x[i] : 0, yi = i < y.size() ? y[i] : 0;
+        if (xi != yi) return xi > yi;
+    }
+    return false;
+}
+
+static void appendUtf8(std::string& s, unsigned cp) {
+    if (cp < 0x80) s += (char)cp;
+    else if (cp < 0x800) { s += (char)(0xC0 | (cp >> 6)); s += (char)(0x80 | (cp & 0x3F)); }
+    else if (cp < 0x10000) { s += (char)(0xE0 | (cp >> 12)); s += (char)(0x80 | ((cp >> 6) & 0x3F)); s += (char)(0x80 | (cp & 0x3F)); }
+    else { s += (char)(0xF0 | (cp >> 18)); s += (char)(0x80 | ((cp >> 12) & 0x3F)); s += (char)(0x80 | ((cp >> 6) & 0x3F)); s += (char)(0x80 | (cp & 0x3F)); }
+}
+
+// The text of the first "key": "..." in a JSON document, with its escapes undone (UTF-8).
+static std::string jsonText(const std::string& j, const std::string& key) {
+    const std::string pat = "\"" + key + "\"";
+    size_t p = j.find(pat);
+    if (p == std::string::npos) return "";
+    p = j.find(':', p + pat.size());
+    if (p == std::string::npos) return "";
+    while (++p < j.size() && (j[p] == ' ' || j[p] == '\n' || j[p] == '\r' || j[p] == '\t')) {}
+    if (p >= j.size() || j[p] != '"') return "";
+    std::string out;
+    for (++p; p < j.size() && j[p] != '"'; ++p) {
+        if (j[p] != '\\' || p + 1 >= j.size()) { out += j[p]; continue; }
+        const char e = j[++p];
+        switch (e) {
+        case 'n': out += '\n'; break;
+        case 'r': break;
+        case 't': out += ' '; break;
+        case 'u': {
+            if (p + 4 >= j.size()) break;
+            unsigned cp = (unsigned)strtoul(j.substr(p + 1, 4).c_str(), nullptr, 16);
+            p += 4;
+            if (cp >= 0xD800 && cp < 0xDC00 && p + 6 < j.size() && j[p + 1] == '\\' && j[p + 2] == 'u') {
+                const unsigned lo = (unsigned)strtoul(j.substr(p + 3, 4).c_str(), nullptr, 16);
+                cp = 0x10000 + ((cp - 0xD800) << 10) + (lo - 0xDC00);
+                p += 6;
+            }
+            appendUtf8(out, cp);
+            break;
+        }
+        default: out += e; break;
+        }
+    }
+    return out;
+}
+
+static bool fetchLatestRelease(UpdateInfo& out) {
+    HINTERNET net = InternetOpenW(L"3mooret-EAX-update-check", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
+    if (!net) return false;
+    DWORD ms = 8000;
+    InternetSetOptionW(net, INTERNET_OPTION_CONNECT_TIMEOUT, &ms, sizeof ms);
+    InternetSetOptionW(net, INTERNET_OPTION_RECEIVE_TIMEOUT, &ms, sizeof ms);
+    const wchar_t* hdr = L"Accept: application/vnd.github+json\r\n";
+    HINTERNET f = InternetOpenUrlW(net, RELEASE_API, hdr, (DWORD)-1, INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_SECURE, 0);
+    std::string body;
+    if (f) {
+        char buf[4096];
+        DWORD got = 0;
+        while (body.size() < 262144 && InternetReadFile(f, buf, sizeof buf, &got) && got) body.append(buf, got);
+        InternetCloseHandle(f);
+    }
+    InternetCloseHandle(net);
+    const std::string tag = jsonText(body, "tag_name");
+    if (tag.empty()) return false;
+    out.tag = clip::widen(tag);
+    out.notes = clip::widen(jsonText(body, "body"));
+    out.url = clip::widen(jsonText(body, "html_url"));
+    return true;
+}
+
+static std::wstring updateSeen() {
+    wchar_t v[64] = L"";
+    DWORD sz = sizeof v - sizeof(wchar_t), type = 0;
+    HKEY hk;
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\OctopusEAX\\Settings", 0, KEY_QUERY_VALUE, &hk) != ERROR_SUCCESS) return L"";
+    if (RegQueryValueExW(hk, L"UpdateSeen", nullptr, &type, (BYTE*)v, &sz) != ERROR_SUCCESS || type != REG_SZ) v[0] = 0;
+    RegCloseKey(hk);
+    return v;
+}
+
+static void updateMarkSeen(const std::wstring& tag) {
+    HKEY hk;
+    if (RegCreateKeyExW(HKEY_CURRENT_USER, L"Software\\OctopusEAX\\Settings", 0, nullptr, 0, KEY_SET_VALUE, nullptr, &hk, nullptr) != ERROR_SUCCESS) return;
+    RegSetValueExW(hk, L"UpdateSeen", 0, REG_SZ, (const BYTE*)tag.c_str(), (DWORD)((tag.size() + 1) * sizeof(wchar_t)));
+    RegCloseKey(hk);
+}
+
+// Checks at start and then every 6 hours. A version is announced once; a failed check stays silent.
+static void updateWatch(HWND owner) {
+    std::thread([owner] {
+        for (;;) {
+            UpdateInfo info;
+            if (fetchLatestRelease(info) && versionNewer(info.tag, APP_VERSION) && updateSeen() != info.tag) {
+                auto* msg = new UpdateInfo(info);
+                if (!PostMessageW(owner, WM_UPDATE, 0, (LPARAM)msg)) delete msg;
+            }
+            for (int i = 0; i < 6 * 3600 && !g.quit.load(); ++i) Sleep(1000);
+            if (g.quit.load()) return;
+        }
+    }).detach();
+}
+
+static void showUpdate(HWND owner, const UpdateInfo& u) {
+    std::wstring notes = u.notes;
+    for (const wchar_t* junk : {L"**", L"`", L"## ", L"# "}) {
+        size_t at;
+        while ((at = notes.find(junk)) != std::wstring::npos) notes.erase(at, wcslen(junk));
+    }
+    if (notes.size() > 1400) notes = notes.substr(0, 1400) + L"...";
+    std::wstring text = std::wstring(lang::tr(L"A new version is available")) + L": " + u.tag + L"\n" + lang::tr(L"You have") + L" " + APP_VERSION + L"\n\n";
+    if (!notes.empty()) text += std::wstring(lang::tr(L"What's new:")) + L"\n" + notes + L"\n\n";
+    text += lang::tr(L"Open the download page?");
+    const UINT flags = MB_YESNO | MB_ICONINFORMATION | MB_SETFOREGROUND | (lang::arabic ? (MB_RTLREADING | MB_RIGHT) : 0);
+    updateMarkSeen(u.tag);
+    if (MessageBoxW(owner, text.c_str(), L"3mooret EAX", flags) == IDYES && !u.url.empty())
+        ShellExecuteW(nullptr, L"open", u.url.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
+}
+
 static const UINT WM_TRAY = WM_APP + 60;
 static const UINT TRAY_ID = 1;
 static const UINT TRAY_OPEN = 9001, TRAY_EXIT = 9002;
@@ -13809,6 +14013,11 @@ static void trayMenu(HWND h) {
 
 static LRESULT CALLBACK wndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
     switch (m) {
+    case WM_UPDATE: {
+        std::unique_ptr<UpdateInfo> u((UpdateInfo*)l);
+        showUpdate(h, *u);
+        return 0;
+    }
     case WM_TRAY:
         if (l == WM_LBUTTONUP || l == WM_LBUTTONDBLCLK) trayShow(h);
         else if (l == WM_RBUTTONUP) trayMenu(h);
@@ -15107,6 +15316,7 @@ int WINAPI WinMain(_In_ HINSTANCE hi, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int n
 
     std::thread th(audioThread);
     windowOpen(hwnd, nShow);
+    updateWatch(hwnd);
     if (firstRun) ShellExecuteW(nullptr, L"open", L"https://www.instagram.com/064_/", nullptr, nullptr, SW_SHOWNORMAL);
 
     MSG msg;
